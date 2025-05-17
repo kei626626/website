@@ -4,85 +4,69 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>写真プロンプト集 | Prompt Library</title>
+  <title>モーダル画像拡大 | Prompt Library</title>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/css/lightbox.min.css" rel="stylesheet" />
-  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Work Sans', 'Noto Sans JP', sans-serif;
-      background-color: #fff;
+      font-family: 'Work Sans', sans-serif;
+      background: #fff;
       color: #111;
-      line-height: 1.6;
     }
+
     header {
       text-align: center;
       padding: 2rem 1rem;
       border-bottom: 1px solid #ccc;
     }
+
     .logo {
       font-size: 2rem;
       font-weight: 700;
     }
+
     main {
       padding: 2rem 1rem;
-      max-width: 1000px;
+      max-width: 900px;
       margin: auto;
     }
-    .heading-with-icon {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-    }
-    .icon-left {
-      width: 24px;
-      height: 24px;
-      stroke-width: 1.8;
-    }
+
     .prompt-grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
     }
+
     @media (min-width: 768px) {
       .prompt-grid {
         grid-template-columns: 1fr 1fr;
       }
     }
+
     .prompt-box {
-      background-color: #f9f9f9;
       border: 1px solid #ccc;
       border-radius: 8px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      height: 100%;
+      background: #f9f9f9;
     }
+
     .prompt-thumb {
       width: 100%;
       height: 200px;
       object-fit: cover;
-      border-bottom: 1px solid #ddd;
+      cursor: pointer;
     }
+
     .prompt-content {
       padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      flex-grow: 1;
     }
+
     .prompt-content pre {
-      white-space: pre-wrap;
       font-family: monospace;
       font-size: 0.9rem;
-      margin: 0;
-      overflow-x: auto;
-      flex-grow: 1;
+      white-space: pre-wrap;
     }
+
     .prompt-content button {
       margin-top: 0.8rem;
       font-size: 0.85rem;
@@ -93,36 +77,48 @@
       color: #fff;
       cursor: pointer;
     }
-    .prompt-content button:active {
-      background-color: #374151;
-    }
 
-    /* ===== Lightbox カスタム ===== */
-    #lightboxOverlay {
-      background: rgba(0, 0, 0, 0.8) !important;
+    /* モーダル */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: rgba(0, 0, 0, 0.7);
       z-index: 1000;
     }
-    #lightbox {
-      z-index: 1001;
+
+    #modal {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
       padding: 1rem;
-      background-color: #fff;
       border-radius: 8px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      max-width: 90%;
+      max-width: 90vw;
+      max-height: 90vh;
+      z-index: 1001;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     }
-    .lb-close {
+
+    #modal img {
+      max-width: 100%;
+      max-height: 80vh;
+      display: block;
+    }
+
+    #modal .close-btn {
       position: absolute;
-      top: -16px;
-      right: -16px;
+      top: -12px;
+      right: -12px;
       width: 32px;
       height: 32px;
       background: #fff url('https://cdn.jsdelivr.net/npm/lightbox2@2/dist/images/close.png') no-repeat center;
       background-size: 60%;
       border: 2px solid #666;
       border-radius: 50%;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
       cursor: pointer;
-      opacity: 1 !important;
     }
   </style>
 </head>
@@ -132,18 +128,15 @@
     <small>プロンプトライブラリ</small>
   </header>
   <main>
-    <h2 class="heading-with-icon">
-      <i data-lucide="image" class="icon-left"></i> 写真プロンプト集
-    </h2>
-    <p class="category-desc">画像生成AIで使える写真加工・イラスト化などのテンプレート集です。</p>
-
+    <h2>📸 写真プロンプト集（モーダル表示）</h2>
     <div class="prompt-grid">
       <div class="prompt-box">
-        <a href="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80" data-lightbox="prompts" data-title="水彩画風の犬">
-          <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80" alt="水彩画風の犬" class="prompt-thumb">
-        </a>
+        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
+             alt="水彩画風の犬"
+             class="prompt-thumb"
+             onclick="openModal('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80')">
         <div class="prompt-content">
-          <pre id="prompt-text-1">
+          <pre>
 あなたはプロのイラストレーターです。
 以下の条件で画像を生成してください：
 
@@ -152,16 +145,17 @@
 - 構図：正面から顔中心
 - 色味：やわらかいパステル調
           </pre>
-          <button onclick="copyPrompt('prompt-text-1')">📋 コピー</button>
+          <button onclick="copyPrompt(this)">📋 コピー</button>
         </div>
       </div>
 
       <div class="prompt-box">
-        <a href="https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?auto=format&fit=crop&w=1200&q=80" data-lightbox="prompts" data-title="クラシック肖像画風">
-          <img src="https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?auto=format&fit=crop&w=800&q=80" alt="クラシック肖像画風" class="prompt-thumb">
-        </a>
+        <img src="https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?auto=format&fit=crop&w=800&q=80"
+             alt="クラシック肖像画風"
+             class="prompt-thumb"
+             onclick="openModal('https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?auto=format&fit=crop&w=1200&q=80')">
         <div class="prompt-content">
-          <pre id="prompt-text-2">
+          <pre>
 あなたはクラシック画風の画家です。
 以下の条件で肖像画を生成してください：
 
@@ -169,16 +163,51 @@
 - スタイル：油絵風
 - 背景：クラシックな室内 or 額縁つき
           </pre>
-          <button onclick="copyPrompt('prompt-text-2')">📋 コピー</button>
+          <button onclick="copyPrompt(this)">📋 コピー</button>
+        </div>
+      </div>
+    
+      <div class="prompt-box">
+        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
+             alt="水彩画風の犬"
+             class="prompt-thumb"
+             onclick="openModal('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80')">
+        <div class="prompt-content">
+          <pre>
+あなたはプロのイラストレーターです。
+以下の条件で画像を生成してください：
+
+- モチーフ：ペットの犬
+- スタイル：水彩画風
+- 構図：正面から顔中心
+- 色味：やわらかいパステル調
+          </pre>
+          <button onclick="copyPrompt(this)">📋 コピー</button>
         </div>
       </div>
     </div>
   </main>
-  <script src="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/js/lightbox.min.js"></script>
+
+  <div id="overlay" onclick="closeModal()"></div>
+  <div id="modal">
+    <div class="close-btn" onclick="closeModal()"></div>
+    <img src="" alt="拡大画像" id="modal-image" />
+  </div>
+
   <script>
-    lucide.createIcons();
-    function copyPrompt(id) {
-      const text = document.getElementById(id).innerText;
+    function openModal(src) {
+      document.getElementById('modal-image').src = src;
+      document.getElementById('modal').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function copyPrompt(btn) {
+      const text = btn.parentElement.querySelector('pre').innerText;
       navigator.clipboard.writeText(text).then(() => {
         alert("プロンプトをコピーしました！");
       });
