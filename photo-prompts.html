@@ -6,7 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>モーダル画像拡大 | Prompt Library</title>
   <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
   <style>
+    :root {
+      --bg: #ffffff;
+      --text: #111111;
+      --subtext: #555555;
+      --border: #e0e0e0;
+      --card-bg: #fafafa;
+      --card-hover: #f0f0f0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #121212;
+        --text: #f1f1f1;
+        --subtext: #aaa;
+        --border: #333;
+        --card-bg: #1e1e1e;
+        --card-hover: #2a2a2a;
+      }
+    }
     body {
       margin: 0;
       font-family: 'Work Sans', sans-serif;
@@ -120,6 +140,21 @@
       border-radius: 50%;
       cursor: pointer;
     }
+	.copy-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.copy-button i {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.5;
+}
+
   </style>
 </head>
 <body>
@@ -128,63 +163,145 @@
     <small>プロンプトライブラリ</small>
   </header>
   <main>
-    <h2>📸 写真プロンプト集（モーダル表示）</h2>
+    <h2><i data-lucide="image"></i> 写真プロンプト集（モーダル表示）</h2>
     <div class="prompt-grid">
       <div class="prompt-box">
-        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
-             alt="水彩画風の犬"
+        <img src="img/photo/img01.png"
+             alt="ビックリマンシール"
              class="prompt-thumb"
-             onclick="openModal('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80')">
+             onclick="openModal('img/photo/img01.png')">
         <div class="prompt-content">
-          <pre>
-あなたはプロのイラストレーターです。
-以下の条件で画像を生成してください：
-
-- モチーフ：ペットの犬
-- スタイル：水彩画風
-- 構図：正面から顔中心
-- 色味：やわらかいパステル調
+          <pre>title: "Bikkuriman-style Sticker"
+description: "ホログラム背景に、ビックリマン風のデフォルメキャラを描いたステッカー用画像を生成します。名前のカスタマイズも可能です。"
+prompt: |
+  ビックリマン風のデフォルメキャラクターイラスト。
+  キャラクターは中央に立ち、太めの輪郭とデフォルメされたポーズ。
+  背景はキラキラのホログラム（シルバーやゴールド）で、レア感のある演出。
+  上部には【名前】という文字をカラフルで目立つマンガ風フォントで配置。
+  日本の「かわいい」テイストを意識し、メタリックな質感を出してください。
+style: "ビックリマン風, デフォルメ, メタリック, コミック調"
+background: "ホログラム【シルバー / ゴールド / レインボー など】"
+output: "正方形 1024×1024、PNG形式"
           </pre>
-          <button onclick="copyPrompt(this)">📋 コピー</button>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
         </div>
       </div>
 
       <div class="prompt-box">
-        <img src="https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?auto=format&fit=crop&w=800&q=80"
-             alt="クラシック肖像画風"
+        <img src="img/photo/img02.png"
+             alt="ビックリマンシール"
              class="prompt-thumb"
-             onclick="openModal('https://images.unsplash.com/photo-1555685812-4b943f1cb0eb?auto=format&fit=crop&w=1200&q=80')">
+             onclick="openModal('img/photo/img02.png')">
         <div class="prompt-content">
-          <pre>
-あなたはクラシック画風の画家です。
-以下の条件で肖像画を生成してください：
-
-- モチーフ：人物の上半身
-- スタイル：油絵風
-- 背景：クラシックな室内 or 額縁つき
+          <pre>title: "LINEスタンプ風アニメイラスト"
+description: "【対象】の写真をもとに、LINEスタンプのような親しみやすいアニメ調のイラストを生成します。"
+prompt: |
+  この写真をもとに、LINEスタンプ風のアニメ調イラストにしてください。
+  【対象】の特徴を活かしつつ、親しみやすいデフォルメを加えてください。
+  線はくっきりと、色は明るく鮮やかに仕上げてください。
+  背景は透過にし、【映ってるものは？】の表情を強調してください。
+  喜びの感情が伝わるようにしてください。
+style: "アニメ風, デフォルメ, 明るく鮮やか, 線がくっきり"
+background: "透過（透明）"
+output: "正方形 1024×1024、PNG形式（透過背景）"
           </pre>
-          <button onclick="copyPrompt(this)">📋 コピー</button>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
         </div>
       </div>
     
       <div class="prompt-box">
-        <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=800&q=80"
-             alt="水彩画風の犬"
+        <img src="img/photo/img03.png"
+             alt="ビックリマンシール"
              class="prompt-thumb"
-             onclick="openModal('https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1200&q=80')">
+             onclick="openModal('img/photo/img03.png')">
         <div class="prompt-content">
-          <pre>
-あなたはプロのイラストレーターです。
-以下の条件で画像を生成してください：
+          <pre>title: "Monet-style"
+description: "【対象】の写真をもとに、クロード・モネ風の印象派スタイルでやわらかく描いたアート風イラストを生成します。"
+prompt: |
+  この写真をもとに、クロード・モネの絵画のような印象派スタイルで描いてください。
+  柔らかくぼかした筆致で、光の揺らぎや空気感を感じさせるように表現してください。
+  【対象】の特徴は保ちつつ、風景と溶け込むようなやさしいタッチにしてください。
+  色合いは淡く、自然な色調でまとめてください。
+  背景も印象派らしい自然風景（草原や水辺）を取り入れてください。
+style: "印象派, モネ風, 柔らかい筆致, 淡い色彩, 絵画調"
+background: "自然風景（草原・水辺・光）"
+output: "正方形 1024×1024、PNG形式"
 
-- モチーフ：ペットの犬
-- スタイル：水彩画風
-- 構図：正面から顔中心
-- 色味：やわらかいパステル調
           </pre>
-          <button onclick="copyPrompt(this)">📋 コピー</button>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
         </div>
       </div>
+		
+		<div class="prompt-box">
+        <img src="img/photo/img04.png"
+             alt="ビックリマンシール"
+             class="prompt-thumb"
+             onclick="openModal('img/photo/img04.png')">
+        <div class="prompt-content">
+          <pre>title: "Ukiyo-e Style Illustration"
+description: "【対象】の写真をもとに、江戸時代の浮世絵風に描いた和風アートイラストを生成します。"
+prompt: |
+  この写真をもとに、江戸時代の浮世絵風に描いてください。
+  【対象】の特徴を保ちながら、伝統的な木版画のように平面的で力強い線を使ってください。
+  色はくすみのある和色（【和色の例】）でまとめてください。
+  背景には和風の装飾（【背景モチーフ】）を取り入れてください。
+  全体的にレトロで趣のある構図にしてください。
+style: "浮世絵, 木版画風, 平面的な構図, 和色, 日本伝統アート"
+background: "和風の装飾（例：波模様・桜・扇など）"
+output: "正方形 1024×1024、PNG形式"
+          </pre>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
+        </div>
+      </div>
+		<div class="prompt-box">
+        <img src="img/photo/img05.png"
+             alt="ビックリマンシール"
+             class="prompt-thumb"
+             onclick="openModal('img/photo/img05.png')">
+        <div class="prompt-content">
+          <pre>title: "3Dデフォルメ犬イラスト（フィギュア風）"
+description: "丸くて可愛い【対象】を3Dアートトイ風に描いた、明るく親しみやすいデフォルメイラスト。"
+prompt: |
+  【対象】を、まるで3Dフィギュアのようなスタイルで描いてください。
+  キャラクターは全体的に丸みを帯び、柔らかい毛並みとつぶらな瞳が特徴です。
+  背景は明るい【背景色】のグラデーションで、シンプルにしてください。
+  色合いはパステル調で、光沢感を抑えたやさしいトーンにまとめてください。
+  中心に配置し、カメラ目線で親しみやすさを強調してください。
+style: "3Dトイ風, デフォルメ, パステルカラー, ソフトな質感"
+background: "単色背景（例：明るい黄色、ベージュ、ピンクなど）"
+output: "正方形 768×768、PNG形式"
+          </pre>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
+        </div>
+      </div>
+		
+		<div class="prompt-box">
+        <img src="img/photo/img06.png"
+             alt="ビックリマンシール"
+             class="prompt-thumb"
+             onclick="openModal('img/photo/img06.png')">
+        <div class="prompt-content">
+          <pre>title: "Starter Pack Style Figure from Photo"
+description: "添付された写真から、スターターパックのパッケージ入り3Dフィギュア風の高画質ビジュアルを生成します。"
+prompt: |
+  添付した写真から、スターターパックのパッケージフィギュア風の画像を作成してください。
+  パッケージは透明なプラスチックで作られており、【希望のカラー】のダンボール製のベースに挿入されています。
+  キャラクターは、かわいい漫画風でありながらもリアルなスタイルで、様式化された3Dフィギュアとして完全に再現され、
+  中央左に立った状態で置かれています。
+  ボックスの上部には「STARTER PACK」、下部には「【希望の名前】」と記載してください。
+  右側にはぴったりフィットした型に入ったいくつかのアクセサリも展示されており、
+  付属品として【希望のアイテム】、【希望のアイテム】、【希望のアイテム】、【希望のアイテム】、【希望のアイテム】を含めてください。
+  画像は明るく高画質で、正面から撮影されており、プロの製品レタリングに近いビジュアルにしてください。
+  理想は、このフィギュアパッケージが店頭で実際に販売されている製品に見えるようなリアリティのある仕上がりです。
+style: "3Dフィギュア風, パッケージアート, 高画質, 写真風, ポップトイ"
+background: "透明プラスチックパッケージ + 【希望のカラー】の背景台紙"
+output: "正面構図、縦長または正方形、高解像度PNG"
+          </pre>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
+        </div>
+      </div>
+		
+	<!--end-->	
     </div>
   </main>
 
@@ -212,6 +329,8 @@
         alert("プロンプトをコピーしました！");
       });
     }
+  
+    lucide.createIcons();
   </script>
 </body>
 </html>
