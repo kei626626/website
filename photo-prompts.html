@@ -163,7 +163,9 @@
     <small>プロンプトライブラリ</small>
   </header>
   <main>
-    <h2><i data-lucide="image"></i> 写真プロンプト集（モーダル表示）</h2>
+    <h2><i data-lucide="image"></i> 写真プロンプト集</h2>
+	  <p>〇サムネイルをクリックすると拡大するよ<br>〇【対象】の箇所はカスタマイズ箇所</p>
+	  
     <div class="prompt-grid">
       <div class="prompt-box">
         <img src="img/photo/img01.webp"
@@ -296,6 +298,22 @@ prompt: |
 style: "3Dフィギュア風, パッケージアート, 高画質, 写真風, ポップトイ"
 background: "透明プラスチックパッケージ + 【希望のカラー】の背景台紙"
 output: "正面構図、縦長または正方形、高解像度PNG"
+          </pre>
+          <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
+        </div>
+      </div>
+		
+		<div class="prompt-box">
+        <img src="img/photo/img07.webp"
+             alt="ビックリマンシール"
+             class="prompt-thumb"
+             onclick="openModal('img/photo/img07.webp')">
+        <div class="prompt-content">
+          <pre>画像を元にした小さなキャラを【キャラ】とする 
+背景は近所の公園
+テイストは3Dのフギュアのような質感
+
+室内の柔らかな自然光が差し込む空間で、体長わずか2センチの【キャラ】が人間の人差し指をよじ登り、両腕を高々と掲げて勝利のポーズを決めている。小さな【キャラ】は大きな瞳を輝かせ、満面の笑みを浮かべてとても幸せそう。人の手はやわらかい光に包まれ、浅い被写界深度で【キャラ】にピントが合っている。カメラはクローズアップでややスローモーション気味に捉え、指先での英雄的なジェスチャーを強調。全体にウィットに富み、心温まる雰囲気に満ちている。
           </pre>
           <button onclick="copyPrompt(this)" class="copy-button"><i data-lucide="copy"></i> コピー</button>
         </div>
