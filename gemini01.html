@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini 3 - The New Era of Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans JP', 'sans-serif'],
+                    },
+                    colors: {
+                        'gemini-dark': '#0b0f19',
+                        'gemini-blue': '#4f8aff',
+                        'gemini-purple': '#d96570',
+                        'gemini-surface': '#131b2e',
+                    },
+                    backgroundImage: {
+                        'hero-gradient': 'radial-gradient(circle at 50% 50%, rgba(79, 138, 255, 0.15) 0%, rgba(11, 15, 25, 1) 70%)',
+                        'deep-think-bg': 'url(https://placehold.co/1000x600/1a2338/ffffff?text=Neural+Network+BG)', // Placeholder for Deep Think BG
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        .glass-card {
+            background: rgba(19, 27, 46, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            background: rgba(19, 27, 46, 0.8);
+            transform: translateY(-5px);
+            border-color: rgba(79, 138, 255, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #ffffff 0%, #4f8aff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Initial hidden state for animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .animate-on-scroll.delay-100 { transition-delay: 0.1s; }
+        .animate-on-scroll.delay-200 { transition-delay: 0.2s; }
+        .animate-on-scroll.delay-300 { transition-delay: 0.3s; }
+        .animate-on-scroll.delay-400 { transition-delay: 0.4s; }
+        .animate-on-scroll.delay-500 { transition-delay: 0.5s; }
+
+        /* Hero text animation */
+        .hero-text-reveal span {
+            display: inline-block;
+            overflow: hidden;
+            vertical-align: top; /* Adjust for better alignment */
+        }
+        .hero-text-reveal span span {
+            display: block;
+            transform: translateY(100%);
+            transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .hero-text-reveal.revealed span span {
+            transform: translateY(0%);
+        }
+
+        /* Parallax BG for Deep Think */
+        .parallax-bg {
+            background-attachment: fixed; /* For true parallax effect */
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Kinetic Typography inspired styles for hover */
+        .kinetic-hover-text {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+        .kinetic-hover-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+            color: #4f8aff; /* Highlight color */
+            pointer-events: none; /* Allow click through */
+        }
+        .kinetic-hover-text:hover::after {
+            transform: translateY(0%);
+        }
+        .kinetic-hover-text:hover span {
+            transform: translateY(-100%);
+        }
+
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="fixed w-full z-50 top-0 left-0 px-6 py-4 glass-card border-b-0 rounded-none">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold tracking-tighter flex items-center gap-2">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">Gemini</span> 3
+            </div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-300">
+                <a href="#overview" class="hover:text-white transition kinetic-hover-text" data-text="Overview"><span>Overview</span></a>
+                <a href="#deep-think" class="hover:text-white transition kinetic-hover-text" data-text="Deep Think"><span>Deep Think</span></a>
+                <a href="#antigravity" class="hover:text-white transition kinetic-hover-text" data-text="Antigravity"><span>Antigravity</span></a>
+                <a href="#benchmarks" class="hover:text-white transition kinetic-hover-text" data-text="Benchmarks"><span>Benchmarks</span></a>
+            </div>
+            <a href="#" class="bg-white text-black px-5 py-2 rounded-full text-sm font-bold hover:bg-gray-200 transition">Try Gemini Advanced</a>
+        </div>
+    </nav>
+
+    <section id="overview" class="relative min-h-screen flex items-center justify-center pt-20 bg-hero-gradient overflow-hidden">
+        <div class="absolute inset-0 z-0 bg-deep-think-bg opacity-10 blur-xl scale-110" style="background-attachment: fixed;"></div>
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="space-y-8">
+                <div class="inline-block px-3 py-1 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-400 text-xs font-bold tracking-wide animate-fade-up">
+                    RELEASED NOV 18, 2025
+                </div>
+                <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter leading-[0.9] hero-text-reveal">
+                    <span><span>Think.</span></span><br>
+                    <span class="text-gradient"><span>Deeper.</span></span>
+                </h1>
+                <p class="text-xl text-gray-400 max-w-lg leading-relaxed animate-on-scroll delay-200">
+                    「Gemini 3」が登場。Google史上、最も賢く、最も直感的なAIモデル。
+                    単なる回答ではなく、思考のパートナーとしての真の知性を体験してください。
+                </p>
+                <div class="flex gap-4 pt-4 animate-on-scroll delay-300">
+                    <button class="bg-blue-600 hover:bg-blue-500 text-white px-8 py-4 rounded-full font-bold transition shadow-lg shadow-blue-900/20">
+                        Start with Gemini 3
+                    </button>
+                    <button class="border border-gray-700 hover:border-white text-white px-8 py-4 rounded-full font-bold transition">
+                        Read the Paper
+                    </button>
+                </div>
+            </div>
+            <div class="relative h-[600px] w-full rounded-2xl overflow-hidden glass-card p-1 animate-on-scroll delay-400">
+                <img src="https://placehold.co/800x1000/131b2e/4f8aff?text=Gemini+3+Neural+Visualization" alt="Gemini 3 Visualization" class="w-full h-full object-cover rounded-xl opacity-80 hover:opacity-100 transition duration-700">
+                <div class="absolute bottom-8 left-8 right-8 animate-on-scroll delay-500">
+                    <div class="bg-black/60 backdrop-blur-md p-4 rounded-xl border border-white/10">
+                        <div class="flex items-center gap-3 mb-2">
+                            <div class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+                            <span class="text-xs font-mono text-gray-300">System 2 Reasoning Active</span>
+                        </div>
+                        <p class="text-sm text-white font-mono">"Analyzing quantum physics paper... validating hypotheses... generating simulation code."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="deep-think" class="py-24 px-6 bg-gemini-dark relative overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-15" style="background-image: url('https://placehold.co/1920x1080/1a2338/ffffff?text=Abstract+Neurons'); background-size: cover; background-position: center; background-attachment: fixed;" data-parallax-speed="0.2"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <h2 class="text-4xl font-bold mb-16 text-center animate-on-scroll">Beyond Intelligence</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-6 h-auto md:h-[800px]">
+                
+                <div class="glass-card rounded-3xl p-8 md:col-span-2 md:row-span-1 relative overflow-hidden group animate-on-scroll">
+                    <div class="relative z-10">
+                        <h3 class="text-3xl font-bold mb-4">Deep Think Mode</h3>
+                        <p class="text-gray-400 max-w-md">
+                            複雑な数学、科学、コーディングの課題に対して、Gemini 3は「思考」します。即答するのではなく、内部で推論プロセスを経て、より深く、正確な解を導き出します。
+                        </p>
+                    </div>
+                    <div class="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-blue-900/20 to-transparent"></div>
+                    <img src="https://placehold.co/600x400/1a2338/ffffff?text=Reasoning+Process+UI" alt="Deep Think UI" class="absolute bottom-[-50px] right-[-50px] w-[400px] rounded-lg shadow-2xl transform group-hover:scale-105 transition duration-500 border border-white/10">
+                </div>
+
+                <div class="glass-card rounded-3xl p-8 md:col-span-1 md:row-span-2 flex flex-col justify-between group animate-on-scroll delay-100">
+                    <div>
+                        <h3 class="text-3xl font-bold mb-4">Native<br>Multimodal</h3>
+                        <p class="text-gray-400 text-sm mb-6">
+                            テキスト、画像、音声、動画をシームレスに理解。「その場の空気」を読むほどのニュアンス理解を実現しました。
+                        </p>
+                    </div>
+                    <div class="w-full h-64 bg-black/30 rounded-xl overflow-hidden relative">
+                        <img src="https://placehold.co/400x600/000000/333333?text=Video+Input+Analysis" alt="Multimodal Analysis" class="object-cover w-full h-full opacity-60 group-hover:opacity-80 transition">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-5xl">👁️</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="antigravity" class="glass-card rounded-3xl p-8 md:col-span-1 md:row-span-1 group animate-on-scroll delay-200">
+                    <h3 class="text-2xl font-bold mb-3 text-blue-400">Google Antigravity</h3>
+                    <p class="text-gray-400 text-sm mb-4">
+                        新しいエージェント開発プラットフォーム。コーディング、ブラウザ操作、ターミナル実行を自律的に行います。
+                    </p>
+                    <div class="w-full h-32 bg-gray-900/50 rounded-lg border border-gray-700 font-mono text-xs p-3 text-green-400 overflow-hidden">
+                        > Initiating workflow...<br>
+                        > analyzing repo...<br>
+                        > fix deployed.<br>
+                        <span class="animate-pulse">_</span>
+                    </div>
+                </div>
+
+                <div id="benchmarks" class="glass-card rounded-3xl p-8 md:col-span-1 md:row-span-1 flex items-center justify-center bg-gradient-to-br from-blue-900/20 to-purple-900/20 animate-on-scroll delay-300">
+                    <div class="text-center">
+                        <p class="text-sm text-gray-400 uppercase tracking-widest mb-2">Humanity's Last Exam</p>
+                        <div class="text-6xl font-bold text-white mb-2">37.4%</div>
+                        <div class="text-sm text-green-400 font-bold">▲ vs GPT-5.1 (26.5%)</div>
+                        <p class="text-xs text-gray-500 mt-4">World's #1 Reasoning Score</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 px-6 bg-black">
+        <div class="max-w-5xl mx-auto">
+            <div class="flex items-end justify-between mb-12 border-b border-gray-800 pb-4 animate-on-scroll">
+                <h2 class="text-3xl font-bold">Benchmark Comparison</h2>
+                <p class="text-gray-500">Data as of Nov 19, 2025</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse animate-on-scroll delay-100">
+                    <thead>
+                        <tr class="text-gray-400 text-sm border-b border-gray-800">
+                            <th class="py-4 font-medium">Benchmark</th>
+                            <th class="py-4 font-medium text-white">Gemini 3 Pro</th>
+                            <th class="py-4 font-medium">GPT-5.1</th>
+                            <th class="py-4 font-medium">Claude Sonnet 4.5</th>
+                        </tr>
+                    </thead>
+                    <tbody class="font-mono text-sm">
+                        <tr class="border-b border-gray-800 hover:bg-white/5 transition">
+                            <td class="py-6 text-gray-300">GPQA Diamond (Science)</td>
+                            <td class="py-6 text-blue-400 font-bold text-lg">91.9%</td>
+                            <td class="py-6 text-gray-500">88.1%</td>
+                            <td class="py-6 text-gray-500">83.4%</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-white/5 transition">
+                            <td class="py-6 text-gray-300">MATH (Reasoning)</td>
+                            <td class="py-6 text-blue-400 font-bold text-lg">95.0%</td>
+                            <td class="py-6 text-gray-500">94.0%</td>
+                            <td class="py-6 text-gray-500">87.0%</td>
+                        </tr>
+                        <tr class="border-b border-gray-800 hover:bg-white/5 transition">
+                            <td class="py-6 text-gray-300">SWE-bench (Coding Agent)</td>
+                            <td class="py-6 text-blue-400 font-bold text-lg">76.2%</td>
+                            <td class="py-6 text-gray-500">76.3%</td>
+                            <td class="py-6 text-gray-500">77.2%</td>
+                        </tr>
+                        <tr class="hover:bg-white/5 transition">
+                            <td class="py-6 text-gray-300">Context Window</td>
+                            <td class="py-6 text-white">2M Tokens</td>
+                            <td class="py-6 text-gray-500">128k</td>
+                            <td class="py-6 text-gray-500">512k</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center border-t border-gray-900">
+        <p class="text-2xl font-bold mb-6 animate-on-scroll">Ready to build with <span class="text-white">Gemini 3</span>?</p>
+        <div class="flex justify-center gap-6 mb-12 animate-on-scroll delay-100">
+            <a href="#" class="text-gray-400 hover:text-white text-sm">Google AI Studio</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm">Vertex AI</a>
+            <a href="#" class="text-gray-400 hover:text-white text-sm">DeepMind Blog</a>
+        </div>
+        <p class="text-gray-600 text-xs animate-on-scroll delay-200">© 2025 Google LLC. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Hero text reveal animation
+            const heroText = document.querySelector('.hero-text-reveal');
+            if (heroText) {
+                // Ensure text is split into spans for animation
+                heroText.innerHTML = heroText.textContent.replace(/\S/g, "<span><span>$&</span></span>");
+                setTimeout(() => {
+                    heroText.classList.add('revealed');
+                }, 100); // Small delay to ensure CSS is applied before animation
+            }
+
+            // Scroll-triggered animations (fade-up)
+            const animateElements = document.querySelectorAll('.animate-on-scroll');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target); // Stop observing once visible
+                    }
+                });
+            }, observerOptions);
+
+            animateElements.forEach(el => {
+                observer.observe(el);
+            });
+
+            // Parallax effect
+            const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
+
+            window.addEventListener('scroll', () => {
+                parallaxElements.forEach(el => {
+                    const speed = parseFloat(el.getAttribute('data-parallax-speed'));
+                    const yPos = -window.scrollY * speed;
+                    el.style.transform = `translateY(${yPos}px)`;
+                });
+            });
+
+            // Smooth scroll for nav links
+            document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
