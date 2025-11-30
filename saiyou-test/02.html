@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>私たちについて ワイヤーフレーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+        }
+        /* 画像プレースホルダー色指定 */
+        .img-placeholder {
+            background-color: #CCCCCC;
+        }
+        /* セクション共通スタイル */
+        .section-base {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* 矢印アイコンのスタイル */
+        .arrow-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 1.0rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s;
+        }
+        .arrow-link:hover {
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="bg-white relative">
+
+    <!-- グローバルナビ -->
+    <header class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-40 flex items-center justify-between px-10">
+        <div class="text-xl font-bold">LOGO</div>
+        <nav>
+            <ul class="flex space-x-8 text-sm font-medium">
+                <li><a href="01.html" class="hover:text-gray-500">代表メッセージ</a></li>
+                <li><a href="02.html" class="hover:text-gray-500">私たちについて</a></li>
+                <li><a href="03.html" class="hover:text-gray-500">仕事について</a></li>
+				<li><a href="#" class="hover:text-gray-500">社員インタビュー</a></li>
+                <li><a href="04.html" class="hover:text-gray-500">数字でみる</a></li>				
+				<li><a href="05.html" class="hover:text-gray-500">制度・環境</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="pt-24 pb-20 max-w-6xl mx-auto px-5 md:px-10">
+
+        <!-- 1. ページタイトル -->
+        <section class="mb-20 text-center">
+            <h1 class="text-4xl font-bold mb-3">私たちについて</h1>
+            <p class="text-sm text-gray-500">企業理念・ビジョン・ミッション</p>
+        </section>
+
+        <!-- 2. 企業理念（Philosophy） -->
+        <section class="section-base mb-24 w-full">
+            <div class="flex flex-col md:flex-row h-auto md:h-[350px] w-full items-center">
+                
+                <!-- 写真エリア (左 40%) -->
+                <div class="w-full md:w-[40%] h-[300px] md:h-full img-placeholder flex-shrink-0"></div>
+                
+                <!-- テキストエリア (右 60%) -->
+                <div class="w-full md:w-[60%] h-full pl-0 md:pl-12 pt-6 md:pt-0 flex flex-col justify-center">
+                    <h2 class="text-2xl font-bold mb-6 border-b-2 border-gray-200 pb-2 inline-block self-start">
+                        企業理念 (Philosophy)
+                    </h2>
+                    <p class="leading-relaxed text-base text-gray-700">
+                        私たちの企業理念について説明するダミーテキストです。<br>
+                        社会に対してどのような価値を提供し、どのような存在でありたいかをここに記述します。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br>
+                        揺るぎない信念をここに記します。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. ビジョン（Vision） -->
+        <section class="section-base mb-24 w-full">
+            <div class="flex flex-col md:flex-row-reverse h-auto md:h-[350px] w-full items-center">
+                
+                <!-- 写真エリア (右 40%) -->
+                <div class="w-full md:w-[40%] h-[300px] md:h-full img-placeholder flex-shrink-0"></div>
+                
+                <!-- テキストエリア (左 60%) -->
+                <div class="w-full md:w-[60%] h-full pr-0 md:pr-12 pt-6 md:pt-0 flex flex-col justify-center">
+                    <h2 class="text-2xl font-bold mb-6 border-b-2 border-gray-200 pb-2 inline-block self-start">
+                        ビジョン (Vision)
+                    </h2>
+                    <p class="leading-relaxed text-base text-gray-700">
+                        私たちが目指す未来の姿、ビジョンについての説明文が入ります。<br>
+                        5年後、10年後にどのような世界を実現していたいかを描きます。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.<br>
+                        未来への展望をここに示します。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. ミッション（Mission） -->
+        <section class="section-base mb-32 w-full">
+            <div class="flex flex-col md:flex-row h-auto md:h-[350px] w-full items-center">
+                
+                <!-- 写真エリア (左 40%) -->
+                <div class="w-full md:w-[40%] h-[300px] md:h-full img-placeholder flex-shrink-0"></div>
+                
+                <!-- テキストエリア (右 60%) -->
+                <div class="w-full md:w-[60%] h-full pl-0 md:pl-12 pt-6 md:pt-0 flex flex-col justify-center">
+                    <h2 class="text-2xl font-bold mb-6 border-b-2 border-gray-200 pb-2 inline-block self-start">
+                        ミッション (Mission)
+                    </h2>
+                    <p class="leading-relaxed text-base text-gray-700">
+                        ビジョンを達成するために、私たちが日々果たすべき使命について記述します。<br>
+                        具体的な行動指針や、顧客への約束などをここに記載します。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+                        Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<br>
+                        日々のミッションを明確にします。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. バリュー・行動指針 -->
+        <section class="section-base mb-24 w-full">
+            <div class="text-center md:text-left mb-10">
+                <h2 class="text-2xl font-bold inline-block border-l-4 border-gray-400 pl-4">バリュー・行動指針</h2>
+            </div>
+            
+            <!-- カードグリッド (3カラム) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Value 1 -->
+                <div class="border border-gray-200 p-6 h-[240px] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 img-placeholder mb-4"></div> <!-- アイコンエリア -->
+                    <h3 class="font-bold text-lg mb-3">Professional</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        常にプロフェッショナルとしての自覚を持ち、最高のパフォーマンスを発揮します。<br>
+                        Lorem ipsum dolor sit amet.
+                    </p>
+                </div>
+
+                <!-- Value 2 -->
+                <div class="border border-gray-200 p-6 h-[240px] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 img-placeholder mb-4"></div> <!-- アイコンエリア -->
+                    <h3 class="font-bold text-lg mb-3">Challenge</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        失敗を恐れず、常に新しいことに挑戦し続けます。<br>
+                        Consectetur adipiscing elit, sed do eiusmod tempor.
+                    </p>
+                </div>
+
+                <!-- Value 3 -->
+                <div class="border border-gray-200 p-6 h-[240px] flex flex-col items-center text-center">
+                    <div class="w-12 h-12 img-placeholder mb-4"></div> <!-- アイコンエリア -->
+                    <h3 class="font-bold text-lg mb-3">Teamwork</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        互いを尊重し、チームとしての成果を最大化します。<br>
+                        Ut enim ad minim veniam, quis nostrud.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. 次のページへの導線 -->
+        <div class="w-full flex justify-end">
+            <a href="#" class="arrow-link text-gray-600 hover:text-black">
+                仕事について <span class="ml-2">→</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="w-full h-24 bg-gray-100 flex items-center justify-center border-t border-gray-200">
+        <p class="text-xs text-gray-500">© 2023 Company Name. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

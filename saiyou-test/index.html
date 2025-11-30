@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOPページ ワイヤーフレーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+        }
+        /* 画像プレースホルダー色指定 */
+        .img-placeholder {
+            background-color: #CCCCCC;
+        }
+        /* セクション共通スタイル */
+        .section-base {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* 矢印アイコンのスタイル */
+        .arrow-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s;
+        }
+        .arrow-link:hover {
+            transform: translateX(5px);
+        }
+        .arrow-icon {
+            margin-left: 8px;
+            width: 24px;
+            height: 24px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- グローバルナビ（固定） -->
+    <header class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-50 flex items-center justify-between px-10">
+        <div class="text-xl font-bold">LOGO</div>
+        <nav>
+            <ul class="flex space-x-8 text-sm font-medium">
+                <li><a href="01.html" class="hover:text-gray-500">代表メッセージ</a></li>
+                <li><a href="02.html" class="hover:text-gray-500">私たちについて</a></li>
+                <li><a href="03.html" class="hover:text-gray-500">仕事について</a></li>
+				<li><a href="#" class="hover:text-gray-500">社員インタビュー</a></li>
+                <li><a href="04.html" class="hover:text-gray-500">数字でみる</a></li>				
+				<li><a href="05.html" class="hover:text-gray-500">制度・環境</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ（固定ヘッダー分下げる） -->
+    <main class="pt-16">
+
+        <!-- 1. メインビジュアル -->
+        <section class="section-base h-[550px] img-placeholder relative w-full">
+            <div class="absolute bottom-10 left-10 md:left-20 max-w-2xl">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4 text-white drop-shadow-md">
+                    キャッチコピーが入ります。<br>
+                    ここにはキャッチコピーが入ります。<br>
+                    未来を創る、新しい価値を。
+                </h1>
+                <p class="text-lg text-white drop-shadow-md">
+                    サブコピーがここに入ります。Lorem ipsum dolor sit amet.
+                </p>
+            </div>
+        </section>
+
+        <!-- 2. メッセージ -->
+        <section class="section-base h-[260px] relative w-full">
+            <div class="absolute top-0 left-0 w-full h-1/2 img-placeholder z-0"></div>
+            
+            <div class="relative z-10 w-full h-full max-w-7xl mx-auto px-10 flex flex-col justify-between py-10">
+                <div class="mt-4 bg-white/80 p-4 inline-block self-start">
+                    <h2 class="text-2xl font-bold mb-2">Message</h2>
+                    <p class="text-sm leading-relaxed">
+                        短いメッセージがここに入ります。私たちの想いやビジョンについて語ります。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    </p>
+                </div>
+                <div class="self-end">
+                    <a href="01.html" class="arrow-link text-lg">
+                        more <span class="arrow-icon">→</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. 私たちについて -->
+        <section class="section-base min-h-[350px] w-full flex items-center bg-white border-t border-gray-100">
+            <div class="w-full h-full flex">
+                <div class="w-[40%] img-placeholder h-[350px]"></div>
+                <div class="w-[60%] pl-10 pr-20 flex flex-col justify-center items-start">
+                    <h2 class="text-3xl font-bold mb-6">私たちについて</h2>
+                    <p class="text-base leading-relaxed mb-6 w-full">
+                        企業理念に関する説明文が入ります。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+                        ここには3〜4行程度のテキストが入ります。
+                    </p>
+                    <div class="w-full text-right">
+                        <a href="02.html" class="arrow-link">
+                            View Details <span class="arrow-icon">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. 仕事について -->
+        <section class="section-base min-h-[350px] w-full flex items-center bg-white border-t border-gray-100">
+            <div class="w-full h-full flex flex-row-reverse">
+                <div class="w-[40%] img-placeholder h-[350px]"></div>
+                <div class="w-[60%] pr-10 pl-20 flex flex-col justify-center items-start">
+                    <h2 class="text-3xl font-bold mb-6">仕事について</h2>
+                    <p class="text-base leading-relaxed mb-6 w-full">
+                        業務内容に関する説明文が入ります。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+                        ここには3〜4行程度のテキストが入ります。
+                    </p>
+                    <div class="w-full text-right">
+                        <a href="03.html" class="arrow-link">
+                            View Details <span class="arrow-icon">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. 社員インタビュー -->
+        <section class="section-base py-16 bg-gray-50 w-full">
+            <div class="max-w-7xl mx-auto px-5">
+                <h2 class="text-3xl font-bold mb-10 pl-2 border-l-4 border-[#CCCCCC]">社員インタビュー</h2>
+                
+                <div class="flex justify-between items-start mb-10">
+                    <div class="w-[23%] flex flex-col">
+                        <div class="w-full aspect-[3/4] img-placeholder mb-4"></div>
+                        <p class="font-bold text-lg mb-1">山田 太郎</p>
+                        <p class="text-sm text-gray-600">エンジニア / 2020年入社</p>
+                    </div>
+                    <div class="w-[23%] flex flex-col">
+                        <div class="w-full aspect-[3/4] img-placeholder mb-4"></div>
+                        <p class="font-bold text-lg mb-1">鈴木 花子</p>
+                        <p class="text-sm text-gray-600">デザイナー / 2021年入社</p>
+                    </div>
+                    <div class="w-[23%] flex flex-col">
+                        <div class="w-full aspect-[3/4] img-placeholder mb-4"></div>
+                        <p class="font-bold text-lg mb-1">佐藤 次郎</p>
+                        <p class="text-sm text-gray-600">ディレクター / 2019年入社</p>
+                    </div>
+                    <div class="w-[23%] flex flex-col">
+                        <div class="w-full aspect-[3/4] img-placeholder mb-4"></div>
+                        <p class="font-bold text-lg mb-1">田中 美咲</p>
+                        <p class="text-sm text-gray-600">マーケティング / 2022年入社</p>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <a href="https://www.wantedly.com" target="_blank" class="arrow-link text-lg text-blue-600">
+                        もっと見る (Wantedly) <span class="arrow-icon border-blue-600 text-blue-600">→</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. 数字でみる会社 -->
+        <section class="section-base min-h-[350px] w-full flex items-center bg-white border-t border-gray-100">
+            <div class="w-full h-full flex">
+                <div class="w-[40%] img-placeholder h-[350px]"></div>
+                <div class="w-[60%] pl-10 pr-20 flex flex-col justify-center items-start">
+                    <h2 class="text-3xl font-bold mb-6">数字でみる会社</h2>
+                    <p class="text-base leading-relaxed mb-6 w-full">
+                        会社の成長や実績を数字で紹介します。<br>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <br>
+                        Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<br>
+                        信頼性を高めるデータをここに配置します。
+                    </p>
+                    <div class="w-full text-right">
+                        <a href="04.html" class="arrow-link">
+                            View Details <span class="arrow-icon">→</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. 制度・環境 -->
+        <section class="section-base py-20 bg-gray-50 w-full">
+            <div class="max-w-6xl mx-auto px-5">
+                <h2 class="text-3xl font-bold mb-12 pl-2 border-l-4 border-[#CCCCCC]">制度・環境</h2>
+
+                <div class="grid grid-cols-2 gap-10">
+                    
+                    <!-- Block 1: 学び -->
+                    <div class="flex w-full h-[220px] bg-white shadow-sm">
+                        <div class="w-[25%] img-placeholder h-full"></div>
+                      <div class="w-[75%] p-6 flex flex-col justify-center relative">
+                            <h3 class="text-xl font-bold mb-3">学び・研修制度</h3>
+                        <p class="text-sm leading-relaxed text-gray-600 mb-4">
+                                社員の成長を支援するための研修制度について。<br>
+                                Lorem ipsum dolor sit amet.
+                            </p>
+                          <a href="05.html" class="absolute bottom-6 right-6 arrow-link">
+                              Details <span class="arrow-icon">→</span>
+                          </a>
+                        </div>
+                    </div>
+
+                    <!-- Block 2: 資格取得 -->
+                    <div class="flex w-full h-[220px] bg-white shadow-sm">
+                        <div class="w-[25%] img-placeholder h-full"></div>
+                      <div class="w-[75%] p-6 flex flex-col justify-center relative">
+                            <h3 class="text-xl font-bold mb-3">資格取得支援</h3>
+                        <p class="text-sm leading-relaxed text-gray-600 mb-4">
+                                資格取得にかかる費用補助や報奨金について。<br>
+                                Lorem ipsum dolor sit amet.
+                          </p>
+                          <a href="05.html" class="absolute bottom-6 right-6 arrow-link">
+                              Details <span class="arrow-icon">→</span>
+                          </a>
+                        </div>
+                    </div>
+
+                    <!-- Block 3: 制度紹介 -->
+                    <div class="flex w-full h-[220px] bg-white shadow-sm">
+                        <div class="w-[25%] img-placeholder h-full"></div>
+                      <div class="w-[75%] p-6 flex flex-col justify-center relative">
+                            <h3 class="text-xl font-bold mb-3">福利厚生・制度紹介</h3>
+                        <p class="text-sm leading-relaxed text-gray-600 mb-4">
+                                働きやすい環境を作るための様々な制度。<br>
+                                Lorem ipsum dolor sit amet.
+                            </p>
+                          <a href="05.html" class="absolute bottom-6 right-6 arrow-link">
+                              Details <span class="arrow-icon">→</span>
+                          </a>
+                        </div>
+                    </div>
+
+                    <!-- Block 4: 取り組み -->
+                    <div class="flex w-full h-[220px] bg-white shadow-sm">
+                        <div class="w-[25%] img-placeholder h-full"></div>
+                      <div class="w-[75%] p-6 flex flex-col justify-center relative">
+                            <h3 class="text-xl font-bold mb-3">社内の取り組み</h3>
+                        <p class="text-sm leading-relaxed text-gray-600 mb-4">
+                                チームビルディングや社内イベントについて。<br>
+                                Lorem ipsum dolor sit amet.
+                          </p>
+                          <a href="05.html" class="absolute bottom-6 right-6 arrow-link">
+                              Details <span class="arrow-icon">→</span>
+                          </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. 採用情報リンクボタン -->
+        <section class="section-base py-20 w-full bg-white flex justify-center items-center">
+            <a href="#" class="w-[90%] md:w-[80%] h-[100px] bg-[#333] hover:bg-[#555] text-white text-2xl font-bold flex items-center justify-center transition-colors duration-300 shadow-lg">
+                採用情報を見る
+            </a>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="w-full h-24 bg-gray-100 flex items-center justify-center border-t border-gray-200">
+        <p class="text-xs text-gray-500">© 2023 Company Name. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>制度・環境 ワイヤーフレーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+        }
+        /* アイコンプレースホルダー色指定 */
+        .icon-placeholder {
+            background-color: #CCCCCC;
+        }
+        /* セクション共通スタイル */
+        .section-base {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* 矢印アイコンのスタイル */
+        .arrow-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 1.0rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s;
+        }
+        .arrow-link:hover {
+            transform: translateX(5px);
+        }
+        /* カードホバーエフェクト（控えめに） */
+        .welfare-card {
+            transition: all 0.3s ease;
+        }
+        .welfare-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border-color: #999;
+        }
+    </style>
+</head>
+<body class="bg-white relative">
+
+    <!-- グローバルナビ -->
+    <header class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-40 flex items-center justify-between px-10">
+        <div class="text-xl font-bold">LOGO</div>
+        <nav>
+            <ul class="flex space-x-8 text-sm font-medium">
+                <li><a href="01.html" class="hover:text-gray-500">代表メッセージ</a></li>
+                <li><a href="02.html" class="hover:text-gray-500">私たちについて</a></li>
+                <li><a href="03.html" class="hover:text-gray-500">仕事について</a></li>
+				<li><a href="#" class="hover:text-gray-500">社員インタビュー</a></li>
+                <li><a href="04.html" class="hover:text-gray-500">数字でみる</a></li>				
+				<li><a href="05.html" class="hover:text-gray-500">制度・環境</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="pt-24 pb-20 max-w-6xl mx-auto px-5 md:px-10">
+
+        <!-- 1. ページタイトル -->
+        <section class="mb-20 text-center">
+            <h1 class="text-4xl font-bold mb-4">制度・環境</h1>
+            <p class="text-base text-gray-600">働きやすさ・学び・成長を支える制度をご紹介します。</p>
+        </section>
+
+        <!-- 2. 学び（Learning） -->
+        <section class="mb-24 w-full">
+            <div class="mb-10 max-w-3xl">
+                <h2 class="text-2xl font-bold mb-4 border-l-4 border-[#CCCCCC] pl-4">学び (Learning)</h2>
+                <p class="leading-relaxed text-base text-gray-700">
+                    私たちは、社員が主体的に学び成長し続けることを大切にしています。<br>
+                    日々の業務を通じた実践的な学びに加え、外部研修やオンライン講座など、<br>
+                    個々のキャリア形成を支援する制度を整備しています。
+                </p>
+            </div>
+            
+            <!-- 3カラムグリッド -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[300px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-20 h-20 icon-placeholder mb-6 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-4">オンライン研修支援</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        業務に関連するオンライン研修を受講できる制度です。
+                        自己学習の時間を確保しやすく、忙しい中でも継続的にスキル向上が可能です。
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[300px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-20 h-20 icon-placeholder mb-6 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-4">社内ナレッジ共有会</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        定期的に開催される勉強会で、各部門の知見や成功事例を共有。
+                        実務にすぐ活かせる内容が中心で、学習文化の醸成につながっています。
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[300px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-20 h-20 icon-placeholder mb-6 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-4">書籍購入補助</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        業務に関連する書籍の購入費用を会社が補助します。
+                        分野問わず社員の興味・関心の幅を広げるための支援制度です。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. 資格取得（Certification） -->
+        <section class="mb-24 w-full pt-10 border-t border-gray-100">
+            <div class="mb-10 max-w-3xl">
+                <h2 class="text-2xl font-bold mb-4 border-l-4 border-[#CCCCCC] pl-4">資格取得支援</h2>
+                <p class="leading-relaxed text-base text-gray-700">
+                    専門知識を深め、業務の質を高めるための資格取得を積極的に支援しています。<br>
+                    各職種のキャリアパスに応じて必要な資格を定義し、<br>
+                    試験料補助や学習サポートを提供しています。
+                </p>
+            </div>
+
+            <!-- 3カラムグリッド -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[300px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-20 h-20 icon-placeholder mb-6 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-4">資格受験費用補助</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        業務に関連する資格の受験料を会社が負担します。
+                        合格・不合格に関わらず、チャレンジを支援する制度です。
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[300px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-20 h-20 icon-placeholder mb-6 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-4">合格報奨金</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        難易度の高い資格に合格した場合、報奨金を支給。
+                        モチベーション向上とキャリア形成の後押しにつながります。
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[300px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-20 h-20 icon-placeholder mb-6 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-4">学習時間確保支援</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        資格取得に向けた学習時間の確保をサポート。
+                        業務状況に応じて上長と調整しながら進められます。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. 制度紹介（Welfare / Policies） -->
+        <section class="mb-24 w-full pt-10 border-t border-gray-100">
+            <div class="mb-10 max-w-3xl">
+                <h2 class="text-2xl font-bold mb-4 border-l-4 border-[#CCCCCC] pl-4">制度紹介</h2>
+                <p class="leading-relaxed text-base text-gray-700">
+                    社員が安心して働き続けられるよう、基本的な福利厚生に加えて、<br>
+                    多様な働き方を支援する制度を整えています。
+                </p>
+            </div>
+
+            <!-- 3カラムグリッド (5つあるため2行になる) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[280px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">リモートワーク制度</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        働く場所を柔軟に選べる制度です。
+                        業務内容に応じて在宅勤務を取り入れ、効率と働きやすさを両立します。
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[280px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">育児・介護休業</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        ライフステージに合わせた育児・介護休業を取得できます。
+                        復帰後の働き方も相談しながら無理なく調整できます。
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[280px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">時短勤務制度</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        子育てや介護と仕事を両立できるよう、勤務時間を調整できる制度です。
+                    </p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[280px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">健康診断・予防接種</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        年1回の定期健康診断、各種予防接種の費用補助など、
+                        健康維持のための取り組みを行っています。
+                    </p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[280px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">有給休暇制度</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        業務バランスを考慮しつつ、計画的な休暇取得を推奨。
+                        リフレッシュの機会を大切にしています。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. 取り組み（Initiatives） -->
+        <section class="mb-24 w-full pt-10 border-t border-gray-100">
+            <div class="mb-10 max-w-3xl">
+                <h2 class="text-2xl font-bold mb-4 border-l-4 border-[#CCCCCC] pl-4">取り組み</h2>
+                <p class="leading-relaxed text-base text-gray-700">
+                    社員同士がつながり、コミュニケーションを深めるための取り組みも行っています。<br>
+                    業務外の活動を通して、新しい発見や協力関係が生まれる場を大切にしています。
+                </p>
+            </div>
+
+            <!-- 3カラムグリッド -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[260px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">社内イベント</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        全社キックオフや懇親会など、
+                        部署を超えて交流できるイベントを定期開催しています。
+                    </p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[260px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">部活動（サークル）</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        有志による部活動を支援。
+                        スポーツ、クリエイティブ活動など、さまざまなグループが活動中です。
+                    </p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="welfare-card border border-gray-200 p-8 h-auto min-h-[260px] flex flex-col items-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-5 flex-shrink-0"></div>
+                    <h3 class="font-bold text-lg mb-3">表彰制度</h3>
+                    <p class="text-sm text-gray-600 leading-7 text-left w-full">
+                        成果を上げた社員を定期的に表彰。
+                        チーム全体で称え合う文化が根付いています。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. 最後の導線 -->
+        <div class="w-full flex justify-end">
+            <a href="#" class="arrow-link text-gray-600 hover:text-black">
+                数字でみる会社へ <span class="ml-2">→</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="w-full h-24 bg-gray-100 flex items-center justify-center border-t border-gray-200">
+        <p class="text-xs text-gray-500">© 2023 Company Name. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

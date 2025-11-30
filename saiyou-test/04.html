@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字でみる会社 ワイヤーフレーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+        }
+        /* アイコンプレースホルダー色指定 */
+        .icon-placeholder {
+            background-color: #CCCCCC;
+        }
+        /* グラフバー色指定 */
+        .graph-bar {
+            background-color: #CCCCCC;
+        }
+        /* セクション共通スタイル */
+        .section-base {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* 矢印アイコンのスタイル */
+        .arrow-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 1.0rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            transition: transform 0.3s;
+        }
+        .arrow-link:hover {
+            transform: translateX(5px);
+        }
+        /* 数字強調カード */
+        .number-card {
+            transition: transform 0.3s ease;
+        }
+        .number-card:hover {
+            transform: translateY(-5px);
+            border-color: #999;
+        }
+    </style>
+</head>
+<body class="bg-white relative">
+
+    <!-- グローバルナビ -->
+    <header class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-40 flex items-center justify-between px-10">
+        <div class="text-xl font-bold">LOGO</div>
+        <nav>
+            <ul class="flex space-x-8 text-sm font-medium">
+                <li><a href="01.html" class="hover:text-gray-500">代表メッセージ</a></li>
+                <li><a href="02.html" class="hover:text-gray-500">私たちについて</a></li>
+                <li><a href="03.html" class="hover:text-gray-500">仕事について</a></li>
+				<li><a href="#" class="hover:text-gray-500">社員インタビュー</a></li>
+                <li><a href="04.html" class="hover:text-gray-500">数字でみる</a></li>				
+				<li><a href="05.html" class="hover:text-gray-500">制度・環境</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="pt-24 pb-20 max-w-6xl mx-auto px-5 md:px-10">
+
+        <!-- 1. ページタイトル -->
+        <section class="mb-20 text-center">
+            <h1 class="text-4xl font-bold mb-3">数字でみる会社</h1>
+            <p class="text-sm text-gray-500">データで知る私たち</p>
+        </section>
+
+        <!-- 2. 数字の概要 -->
+        <section class="mb-24 w-full text-center max-w-3xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 relative inline-block pb-2 border-b-2 border-gray-200">
+                会社をデータで可視化
+            </h2>
+            <p class="leading-relaxed text-base text-gray-700">
+                創業からの成長軌跡や、働く環境、メンバーの構成などを数字で紐解きます。<br>
+                客観的なデータを通じて、私たちの「今」をお伝えします。
+            </p>
+        </section>
+
+        <!-- 3. データ項目（メインセクション：基本データ） -->
+        <section class="mb-20 w-full">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold relative inline-block pb-2 border-b-2 border-gray-200">
+                    基本データ一覧
+                </h2>
+            </div>
+            
+            <!-- 3カラムグリッド (PC) -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1: 社員数 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">120<span class="text-2xl ml-1 font-normal">名</span></div>
+                    <p class="text-sm text-gray-500">現在の全従業員数</p>
+                </div>
+
+                <!-- Card 2: 男女比 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">6 : 4</div>
+                    <p class="text-sm text-gray-500">男性 : 女性 比率</p>
+                </div>
+
+                <!-- Card 3: 平均年齢 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">32.5<span class="text-2xl ml-1 font-normal">歳</span></div>
+                    <p class="text-sm text-gray-500">全社員の平均年齢</p>
+                </div>
+
+                <!-- Card 4: 拠点数 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">5<span class="text-2xl ml-1 font-normal">拠点</span></div>
+                    <p class="text-sm text-gray-500">東京・大阪・福岡・その他</p>
+                </div>
+
+                <!-- Card 5: 創業年数 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">15<span class="text-2xl ml-1 font-normal">年</span></div>
+                    <p class="text-sm text-gray-500">2008年の設立から現在まで</p>
+                </div>
+
+                <!-- Card 6: 平均勤続年数 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">5.8<span class="text-2xl ml-1 font-normal">年</span></div>
+                    <p class="text-sm text-gray-500">長く働ける環境があります</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. 追加データ（働き方に関するデータ） -->
+        <section class="mb-24 w-full pt-10 border-t border-gray-100">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold relative inline-block pb-2 border-b-2 border-gray-200">
+                    働き方に関するデータ
+                </h2>
+            </div>
+
+            <!-- 3カラムグリッド -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 7: 有給取得率 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">85<span class="text-2xl ml-1 font-normal">%</span></div>
+                    <p class="text-sm text-gray-500">高い有給休暇取得率を維持</p>
+                </div>
+
+                <!-- Card 8: 育休復帰率 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">100<span class="text-2xl ml-1 font-normal">%</span></div>
+                    <p class="text-sm text-gray-500">男女ともに育休取得を推進</p>
+                </div>
+
+                <!-- Card 9: リモート率 -->
+                <div class="number-card border border-gray-200 p-8 h-[240px] flex flex-col items-center justify-center text-center bg-white rounded-sm">
+                    <div class="w-16 h-16 icon-placeholder mb-4"></div>
+                    <div class="text-5xl font-bold mb-2 tracking-tight">80<span class="text-2xl ml-1 font-normal">%</span></div>
+                    <p class="text-sm text-gray-500">ハイブリッドワークを実施中</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 5. 簡易グラフ（推移・割合） -->
+        <section class="mb-24 w-full">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                
+                <!-- グラフ A: 売上推移（棒グラフ風） -->
+                <div class="border border-gray-200 p-8">
+                    <h3 class="font-bold text-lg mb-6 text-center">売上推移イメージ</h3>
+                    <div class="flex items-end justify-between h-[200px] w-full px-4 border-b border-gray-300 pb-2">
+                        <!-- Bar 1 -->
+                        <div class="flex flex-col items-center w-[15%]">
+                            <div class="w-full h-[60px] graph-bar mb-2"></div>
+                            <span class="text-xs text-gray-500">2020</span>
+                        </div>
+                        <!-- Bar 2 -->
+                        <div class="flex flex-col items-center w-[15%]">
+                            <div class="w-full h-[90px] graph-bar mb-2"></div>
+                            <span class="text-xs text-gray-500">2021</span>
+                        </div>
+                        <!-- Bar 3 -->
+                        <div class="flex flex-col items-center w-[15%]">
+                            <div class="w-full h-[120px] graph-bar mb-2"></div>
+                            <span class="text-xs text-gray-500">2022</span>
+                        </div>
+                        <!-- Bar 4 -->
+                        <div class="flex flex-col items-center w-[15%]">
+                            <div class="w-full h-[160px] graph-bar mb-2"></div>
+                            <span class="text-xs text-gray-500">2023</span>
+                        </div>
+                        <!-- Bar 5 -->
+                        <div class="flex flex-col items-center w-[15%]">
+                            <div class="w-full h-[190px] graph-bar mb-2"></div>
+                            <span class="text-xs text-gray-500">2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- グラフ B: 職種割合（帯グラフ風） -->
+                <div class="border border-gray-200 p-8 flex flex-col justify-center">
+                    <h3 class="font-bold text-lg mb-6 text-center">職種別構成比</h3>
+                    <!-- 帯グラフ -->
+                    <div class="w-full h-16 flex mb-4">
+                        <div class="h-full bg-[#333] w-[40%] flex items-center justify-center text-white text-xs font-bold">エンジニア 40%</div>
+                        <div class="h-full bg-[#777] w-[30%] flex items-center justify-center text-white text-xs font-bold">営業 30%</div>
+                        <div class="h-full bg-[#AAA] w-[20%] flex items-center justify-center text-white text-xs font-bold">企画 20%</div>
+                        <div class="h-full bg-[#DDD] w-[10%] flex items-center justify-center text-gray-600 text-xs font-bold">他</div>
+                    </div>
+                    <p class="text-sm text-gray-500 text-center">
+                        エンジニアを中心に、多職種がバランスよく在籍しています。
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. 最後の導線 -->
+        <div class="w-full flex justify-end">
+            <a href="#" class="arrow-link text-gray-600 hover:text-black">
+                制度・環境をみる <span class="ml-2">→</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="w-full h-24 bg-gray-100 flex items-center justify-center border-t border-gray-200">
+        <p class="text-xs text-gray-500">© 2023 Company Name. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>

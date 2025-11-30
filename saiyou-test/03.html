@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>仕事について ワイヤーフレーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333;
+        }
+        /* アイコンプレースホルダー色指定 */
+        .icon-placeholder {
+            background-color: #CCCCCC;
+        }
+        /* セクション共通スタイル */
+        .section-base {
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* カードホバーエフェクト */
+        .dept-card {
+            transition: all 0.3s ease;
+        }
+        .dept-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-white relative">
+
+    <!-- グローバルナビ -->
+    <header class="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-40 flex items-center justify-between px-10">
+        <div class="text-xl font-bold">LOGO</div>
+        <nav>
+            <ul class="flex space-x-8 text-sm font-medium">
+                <li><a href="01.html" class="hover:text-gray-500">代表メッセージ</a></li>
+                <li><a href="02.html" class="hover:text-gray-500">私たちについて</a></li>
+                <li><a href="03.html" class="hover:text-gray-500">仕事について</a></li>
+				<li><a href="#" class="hover:text-gray-500">社員インタビュー</a></li>
+                <li><a href="04.html" class="hover:text-gray-500">数字でみる</a></li>				
+				<li><a href="05.html" class="hover:text-gray-500">制度・環境</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="pt-24 pb-20 max-w-6xl mx-auto px-5 md:px-10">
+
+        <!-- 1. ページタイトル -->
+        <section class="mb-20 text-center">
+            <h1 class="text-4xl font-bold mb-3">仕事について</h1>
+            <p class="text-sm text-gray-500">事業内容・部門紹介</p>
+        </section>
+
+        <!-- 2. 事業内容の概要 -->
+        <section class="mb-24 w-full text-center max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 relative inline-block pb-2 border-b-2 border-gray-200">
+                事業内容
+            </h2>
+            <p class="leading-relaxed text-base text-gray-700">
+                私たちは、テクノロジーの力で世界中のビジネスを加速させるソリューションを提供しています。<br>
+                クライアントの課題解決に向け、多岐にわたる専門チームが連携してプロジェクトを推進します。
+            </p>
+        </section>
+
+        <!-- 3. 部門紹介（12部署 カードグリッド） -->
+        <section class="mb-24 w-full">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl font-bold relative inline-block pb-2 border-b-2 border-gray-200">
+                    部門紹介
+                </h2>
+            </div>
+            
+            <!-- 3カラムグリッド (PC) / 12枚のカード -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Card 1 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">Web開発部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">最新技術を用いたWebアプリ開発</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">モバイルアプリ部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">iOS/Androidアプリの設計・実装</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">UI/UXデザイン部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">ユーザー体験を最大化するデザイン</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">インフラ基盤部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">AWS/GCPによるクラウド構築</p>
+                </div>
+
+                <!-- Card 5 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">データ解析部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">ビッグデータ分析とAIモデル構築</p>
+                </div>
+
+                <!-- Card 6 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">QA・品質管理部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">プロダクトの品質保証とテスト</p>
+                </div>
+
+                <!-- Card 7 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">セールス部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">クライアントへの提案型営業</p>
+                </div>
+
+                <!-- Card 8 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">マーケティング部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">市場調査とプロモーション戦略</p>
+                </div>
+
+                <!-- Card 9 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">カスタマーサクセス</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">導入後の活用支援とサポート</p>
+                </div>
+
+                <!-- Card 10 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">人事・採用部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">組織開発とタレント獲得</p>
+                </div>
+
+                <!-- Card 11 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">総務・労務部</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">働きやすい環境整備と管理業務</p>
+                </div>
+
+                <!-- Card 12 -->
+                <div class="dept-card border border-gray-200 p-6 h-[220px] flex flex-col items-center justify-center text-center bg-white rounded-sm cursor-pointer">
+                    <div class="w-20 h-20 icon-placeholder mb-4"></div>
+                    <h3 class="font-bold text-lg mb-2">経営企画室</h3>
+                    <p class="text-sm text-gray-500 truncate w-full px-2">中長期戦略の策定と実行支援</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. 業務の進め方 (Workflow) -->
+        <section class="mb-24 w-full text-center max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 relative inline-block pb-2 border-b-2 border-gray-200">
+                業務の進め方
+            </h2>
+            <div class="flex flex-col items-center">
+                <!-- シンプルなアイコン（オプション） -->
+                <div class="w-full max-w-[600px] h-16 icon-placeholder mb-8 mx-auto flex items-center justify-center text-white text-sm font-bold tracking-widest">
+                    STEP 1 → STEP 2 → STEP 3 → GOAL
+                </div>
+                <p class="leading-relaxed text-base text-gray-700">
+                    プロジェクトの規模に関わらず、アジャイルな開発手法を取り入れています。<br>
+                    定期的なフィードバックループを回しながら、スピード感を持って価値を創出します。<br>
+                    チーム全体でゴールを共有し、自律的に動くワークスタイルです。
+                </p>
+            </div>
+        </section>
+
+        <!-- 5. プロジェクト事例 -->
+        <section class="mb-24 w-full text-center max-w-4xl mx-auto">
+            <h2 class="text-2xl font-bold mb-6 relative inline-block pb-2 border-b-2 border-gray-200">
+                プロジェクト事例
+            </h2>
+            <p class="leading-relaxed text-base text-gray-700">
+                大手金融機関向けDX推進プロジェクト、教育系スタートアップのアプリ開発支援など、<br>
+                業界を問わず多数の実績があります。
+            </p>
+        </section>
+
+        <!-- 6. 最後の導線（採用情報リンクボタン） -->
+        <section class="w-full flex justify-center items-center py-10">
+            <a href="#" class="w-[90%] md:w-[80%] h-[100px] bg-[#333] hover:bg-[#555] text-white text-2xl font-bold flex items-center justify-center transition-colors duration-300 shadow-lg">
+                採用情報を見る
+            </a>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="w-full h-24 bg-gray-100 flex items-center justify-center border-t border-gray-200">
+        <p class="text-xs text-gray-500">© 2023 Company Name. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
