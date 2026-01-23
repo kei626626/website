@@ -1,0 +1,38 @@
+[
+  {
+    "name": "福田屋",
+    "genre": ["麺", "和"],
+    "visited": false,
+    "walk": 7,
+    "price": 900,
+    "url": "",
+    "note": ""
+  },
+  {
+    "name": "タイ料理研究所",
+    "genre": ["洋"],
+    "visited": false,
+    "walk": 8,
+    "price": 1200,
+    "url": "",
+    "note": ""
+  },
+  {
+    "name": "なかじま",
+    "genre": ["麺", "中"],
+    "visited": false,
+    "walk": 6,
+    "price": 1000,
+    "url": "",
+    "note": ""
+  },
+  {
+    "name": "リンガーハット",
+    "genre": ["麺"],
+    "visited": true,
+    "walk": 5,
+    "price": 850,
+    "url": "",
+    "note": ""
+  }
+]
