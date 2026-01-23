@@ -1,5 +1,6 @@
 'use strict';
 
+// Googleスプレッドシート（CSV公開）
 const SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=0';
 
@@ -12,6 +13,7 @@ const state = {
 
 const el = {
   genreBox: document.getElementById('genreBox'),
+  modeOr: document.getElementById('modeOr'),
   btnFilter: document.getElementById('btnFilter'),
   btnRandom: document.getElementById('btnRandom'),
   btnReset: document.getElementById('btnReset'),
@@ -49,8 +51,7 @@ async function loadShopsFromSheet() {
 
   const csv = await res.text();
   const shops = csvToShops(csv);
-
-  if (!shops.length) throw new Error('シートのヘッダ名が違う or データが空かも');
+  if (!shops.length) throw new Error('シートが空 or ヘッダ名が違うかも');
   return shops;
 }
 
@@ -73,18 +74,15 @@ function csvToShops(csvText) {
     const name = String(obj.name ?? '').trim();
     if (!name) return null;
 
-    const genre = String(obj.genre ?? '')
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean);
-
-    const visited = String(obj.visited ?? '').trim().toLowerCase() === 'true';
-    const walk = toNum(obj.walk);
-    const price = toNum(obj.price);
-    const url = String(obj.url ?? '').trim();
-    const note = String(obj.note ?? '').trim();
-
-    return { name, genre, visited, walk, price, url, note };
+    return {
+      name,
+      genre: String(obj.genre ?? '').split(',').map(s => s.trim()).filter(Boolean),
+      visited: String(obj.visited ?? '').trim().toLowerCase() === 'true',
+      walk: toNum(obj.walk),
+      price: toNum(obj.price),
+      url: String(obj.url ?? '').trim(),
+      note: String(obj.note ?? '').trim()
+    };
   }).filter(Boolean);
 }
 
@@ -96,7 +94,6 @@ function parseCsvLine(line) {
 
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
-
     if (c === '"') {
       if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
       else inQ = !inQ;
@@ -128,13 +125,27 @@ function renderChecks() {
   });
 }
 
+// ★ AND / OR 切替ここ
 function onFilter() {
   const sel = [...state.selected];
-  state.filtered = sel.length === 0
-    ? state.shops
-    : state.shops.filter(s => sel.every(g => s.genre.includes(g)));
+  const useOr = !!el.modeOr.checked;
 
-  el.hint.textContent = sel.length ? `絞り込み：${sel.join('・')}` : '全件表示';
+  if (sel.length === 0) {
+    state.filtered = state.shops;
+    el.hint.textContent = '全件表示';
+    renderList(state.filtered);
+    updateCount();
+    return;
+  }
+
+  state.filtered = state.shops.filter(s => {
+    const g = s.genre || [];
+    return useOr
+      ? sel.some(x => g.includes(x))   // OR
+      : sel.every(x => g.includes(x)); // AND
+  });
+
+  el.hint.textContent = `絞り込み：${useOr ? 'OR' : 'AND'} / ${sel.join('・')}`;
   renderList(state.filtered);
   updateCount();
 }
@@ -153,6 +164,7 @@ function onRandom() {
 function onReset() {
   state.selected.clear();
   document.querySelectorAll('.check input').forEach(i => i.checked = false);
+  el.modeOr.checked = false;
   state.filtered = state.shops;
   renderList(state.filtered);
   el.hint.textContent = 'リセット（全件）';
