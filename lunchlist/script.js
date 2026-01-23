@@ -1,6 +1,5 @@
 'use strict';
 
-// Googleスプレッドシート（CSV公開）
 const SHEET_CSV_URL =
   'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=0';
 
@@ -8,12 +7,11 @@ const state = {
   shops: [],
   genres: [],
   selected: new Set(),
-  filtered: [] // ★ 初期は空
+  filtered: []
 };
 
 const el = {
   genreBox: document.getElementById('genreBox'),
-  modeOr: document.getElementById('modeOr'),
   btnFilter: document.getElementById('btnFilter'),
   btnRandom: document.getElementById('btnRandom'),
   btnReset: document.getElementById('btnReset'),
@@ -33,10 +31,10 @@ async function init() {
 
     renderChecks();
 
-    // ★ 初期表示は出さない
+    // 初期表示なし
     el.list.innerHTML = '';
     el.count.textContent = '—';
-    el.hint.textContent = 'ジャンルを選んで「絞り込む」か、ランダムを押してね';
+    el.hint.textContent = 'ジャンルを選んで絞り込むか、ランダムで決めてね';
 
     el.btnFilter.onclick = onFilter;
     el.btnRandom.onclick = onRandom;
@@ -48,8 +46,7 @@ async function init() {
 
 async function loadShopsFromSheet() {
   const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
-  if (!res.ok) throw new Error('スプレッドシートCSVが読めません');
-
+  if (!res.ok) throw new Error('スプレッドシートが読めません');
   const csv = await res.text();
   return csvToShops(csv);
 }
@@ -106,23 +103,19 @@ function renderChecks() {
   });
 }
 
-// ★ AND / OR フィルタ
+// ★ OR固定フィルタ
 function onFilter() {
   const sel = [...state.selected];
-  const useOr = el.modeOr.checked;
-
   if (sel.length === 0) {
     el.hint.textContent = 'ジャンルを1つ以上選んでね';
     return;
   }
 
-  state.filtered = state.shops.filter(s => {
-    return useOr
-      ? sel.some(g => s.genre.includes(g))
-      : sel.every(g => s.genre.includes(g));
-  });
+  state.filtered = state.shops.filter(s =>
+    sel.some(g => s.genre.includes(g))
+  );
 
-  el.hint.textContent = `絞り込み：${useOr ? 'OR' : 'AND'} / ${sel.join('・')}`;
+  el.hint.textContent = `絞り込み：${sel.join('・')}`;
   renderList(state.filtered);
   updateCount();
 }
@@ -139,11 +132,9 @@ function onReset() {
   state.selected.clear();
   state.filtered = [];
   document.querySelectorAll('.check input').forEach(i => i.checked = false);
-  el.modeOr.checked = false;
-
   el.list.innerHTML = '';
   el.count.textContent = '—';
-  el.hint.textContent = 'リセットした。もう一回選ぼ';
+  el.hint.textContent = 'リセットした';
 }
 
 function renderList(list, highlight) {
@@ -151,7 +142,7 @@ function renderList(list, highlight) {
   list.forEach(s => {
     const d = document.createElement('div');
     d.className = 'shop';
-    if (s.name === highlight) d.style.outline = '2px solid #0f172a';
+    if (s.name === highlight) d.style.outline = '2px solid #34d399';
 
     d.innerHTML = `
       <p class="shopName">${s.name}</p>
@@ -160,7 +151,7 @@ function renderList(list, highlight) {
         <span class="tag ${s.visited ? 'tag-strong' : ''}">
           ${s.visited ? '行った' : '行ってない'}
         </span>
-        ${s.url ? `<a class="tag" href="${s.url}" target="_blank">食べログ</a>` : ''}
+        ${s.url ? `<a class="tag tag-link" href="${s.url}" target="_blank">食べログ</a>` : ''}
       </div>
       <div class="meta">
         <span>徒歩：${s.walk || '—'}分</span>
