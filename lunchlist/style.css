@@ -181,3 +181,29 @@ a:focus, button:focus, input:focus{
 input[type="checkbox"]{
   accent-color:var(--accent);
 }
+/* 追加・上書き用カラー */
+:root{
+  --mint: #34d399;
+  --orange: #fb923c;
+}
+
+/* 絞り込みボタン（ミント） */
+.btn-primary{
+  background: var(--mint);
+  color: #032e1c;
+  border-color: transparent;
+}
+
+/* カード強調アウトライン（ランダム時） */
+.shop[style*="outline"]{
+  box-shadow: 0 0 0 1px var(--mint);
+}
+
+/* 食べログリンク（オレンジ） */
+.tag-link{
+  color: var(--orange);
+  border-color: rgba(251,146,60,.6);
+}
+.tag-link:hover{
+  background: rgba(251,146,60,.1);
+}
