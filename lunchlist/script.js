@@ -4,7 +4,7 @@
  * ここを「ウェブに公開（CSV）」のURLに差し替え
  * 例: https://docs.google.com/spreadsheets/d/e/XXXX/pub?gid=0&single=true&output=csv
  */
-const SHEET_CSV_URL = 'PASTE_YOUR_CSV_URL_HERE';
+const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=0';
 
 const state = {
   shops: [],
