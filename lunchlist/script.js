@@ -8,7 +8,7 @@ const state = {
   shops: [],
   genres: [],
   selected: new Set(),
-  filtered: []
+  filtered: [] // ★ 初期は空
 };
 
 const el = {
@@ -32,10 +32,11 @@ async function init() {
       .sort((a, b) => a.localeCompare(b, 'ja'));
 
     renderChecks();
-    state.filtered = state.shops;
-    renderList(state.filtered);
-    updateCount();
-    el.hint.textContent = '全件表示';
+
+    // ★ 初期表示は出さない
+    el.list.innerHTML = '';
+    el.count.textContent = '—';
+    el.hint.textContent = 'ジャンルを選んで「絞り込む」か、ランダムを押してね';
 
     el.btnFilter.onclick = onFilter;
     el.btnRandom.onclick = onRandom;
@@ -47,26 +48,17 @@ async function init() {
 
 async function loadShopsFromSheet() {
   const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
-  if (!res.ok) throw new Error('スプレッドシートCSVが読めません（共有/公開設定を確認）');
+  if (!res.ok) throw new Error('スプレッドシートCSVが読めません');
 
   const csv = await res.text();
-  const shops = csvToShops(csv);
-  if (!shops.length) throw new Error('シートが空 or ヘッダ名が違うかも');
-  return shops;
+  return csvToShops(csv);
 }
 
 function csvToShops(csvText) {
-  const lines = csvText
-    .replace(/\r\n/g, '\n')
-    .replace(/\r/g, '\n')
-    .split('\n')
-    .filter(l => l.trim() !== '');
+  const lines = csvText.replace(/\r/g, '').split('\n').filter(l => l.trim());
+  const headers = parseCsvLine(lines.shift()).map(h => h.trim());
 
-  if (lines.length < 2) return [];
-
-  const headers = parseCsvLine(lines[0]).map(h => h.trim());
-
-  return lines.slice(1).map(line => {
+  return lines.map(line => {
     const row = parseCsvLine(line);
     const obj = {};
     headers.forEach((h, i) => (obj[h] = row[i] ?? ''));
@@ -77,40 +69,29 @@ function csvToShops(csvText) {
     return {
       name,
       genre: String(obj.genre ?? '').split(',').map(s => s.trim()).filter(Boolean),
-      visited: String(obj.visited ?? '').trim().toLowerCase() === 'true',
-      walk: toNum(obj.walk),
-      price: toNum(obj.price),
+      visited: String(obj.visited ?? '').toLowerCase() === 'true',
+      walk: Number(obj.walk) || 0,
+      price: Number(obj.price) || 0,
       url: String(obj.url ?? '').trim(),
       note: String(obj.note ?? '').trim()
     };
   }).filter(Boolean);
 }
 
-// ダブルクォート対応の軽量CSVパーサ
 function parseCsvLine(line) {
   const out = [];
-  let cur = '';
-  let inQ = false;
-
+  let cur = '', inQ = false;
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
     if (c === '"') {
       if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
       else inQ = !inQ;
     } else if (c === ',' && !inQ) {
-      out.push(cur);
-      cur = '';
-    } else {
-      cur += c;
-    }
+      out.push(cur); cur = '';
+    } else cur += c;
   }
   out.push(cur);
   return out;
-}
-
-function toNum(v) {
-  const n = Number(String(v ?? '').trim());
-  return Number.isFinite(n) && n >= 0 ? Math.floor(n) : 0;
 }
 
 function renderChecks() {
@@ -118,31 +99,27 @@ function renderChecks() {
   state.genres.forEach(g => {
     const l = document.createElement('label');
     l.className = 'check';
-    l.innerHTML = `<input type="checkbox" value="${escapeAttr(g)}">${escapeText(g)}`;
+    l.innerHTML = `<input type="checkbox" value="${g}">${g}`;
     l.querySelector('input').onchange = e =>
       e.target.checked ? state.selected.add(g) : state.selected.delete(g);
     el.genreBox.appendChild(l);
   });
 }
 
-// ★ AND / OR 切替ここ
+// ★ AND / OR フィルタ
 function onFilter() {
   const sel = [...state.selected];
-  const useOr = !!el.modeOr.checked;
+  const useOr = el.modeOr.checked;
 
   if (sel.length === 0) {
-    state.filtered = state.shops;
-    el.hint.textContent = '全件表示';
-    renderList(state.filtered);
-    updateCount();
+    el.hint.textContent = 'ジャンルを1つ以上選んでね';
     return;
   }
 
   state.filtered = state.shops.filter(s => {
-    const g = s.genre || [];
     return useOr
-      ? sel.some(x => g.includes(x))   // OR
-      : sel.every(x => g.includes(x)); // AND
+      ? sel.some(g => s.genre.includes(g))
+      : sel.every(g => s.genre.includes(g));
   });
 
   el.hint.textContent = `絞り込み：${useOr ? 'OR' : 'AND'} / ${sel.join('・')}`;
@@ -152,23 +129,21 @@ function onFilter() {
 
 function onRandom() {
   const pool = state.filtered.length ? state.filtered : state.shops;
-  if (!pool.length) {
-    el.hint.textContent = '候補がない…';
-    return;
-  }
   const pick = pool[Math.floor(Math.random() * pool.length)];
   renderList(pool, pick.name);
   el.hint.textContent = `これ行こ：${pick.name}`;
+  updateCount(pool.length);
 }
 
 function onReset() {
   state.selected.clear();
+  state.filtered = [];
   document.querySelectorAll('.check input').forEach(i => i.checked = false);
   el.modeOr.checked = false;
-  state.filtered = state.shops;
-  renderList(state.filtered);
-  el.hint.textContent = 'リセット（全件）';
-  updateCount();
+
+  el.list.innerHTML = '';
+  el.count.textContent = '—';
+  el.hint.textContent = 'リセットした。もう一回選ぼ';
 }
 
 function renderList(list, highlight) {
@@ -178,41 +153,25 @@ function renderList(list, highlight) {
     d.className = 'shop';
     if (s.name === highlight) d.style.outline = '2px solid #0f172a';
 
-    const tags = [
-      ...(s.genre || []).map(g => `<span class="tag">${escapeText(g)}</span>`),
-      `<span class="tag ${s.visited ? 'tag-strong' : ''}">${s.visited ? '行った' : '行ってない'}</span>`,
-      s.url ? `<a class="tag" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">食べログ</a>` : ''
-    ].filter(Boolean).join('');
-
-    const meta = [
-      `<span>徒歩：${s.walk ? escapeText(String(s.walk)) : '—'}分</span>`,
-      `<span>予算：${s.price ? escapeText(String(s.price)) : '—'}円</span>`,
-      s.note ? `<span>メモ：${escapeText(s.note)}</span>` : ''
-    ].filter(Boolean).join(' ');
-
     d.innerHTML = `
-      <p class="shopName">${escapeText(s.name)}</p>
-      <div class="tags">${tags}</div>
-      <div class="meta">${meta}</div>
+      <p class="shopName">${s.name}</p>
+      <div class="tags">
+        ${s.genre.map(g => `<span class="tag">${g}</span>`).join('')}
+        <span class="tag ${s.visited ? 'tag-strong' : ''}">
+          ${s.visited ? '行った' : '行ってない'}
+        </span>
+        ${s.url ? `<a class="tag" href="${s.url}" target="_blank">食べログ</a>` : ''}
+      </div>
+      <div class="meta">
+        <span>徒歩：${s.walk || '—'}分</span>
+        <span>予算：${s.price || '—'}円</span>
+        ${s.note ? `<span>メモ：${s.note}</span>` : ''}
+      </div>
     `;
     el.list.appendChild(d);
   });
 }
 
-function updateCount() {
-  el.count.textContent = `${state.filtered.length} 件`;
-}
-
-function escapeAttr(s) {
-  return String(s)
-    .replaceAll('&', '&amp;')
-    .replaceAll('"', '&quot;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
-}
-function escapeText(s) {
-  return String(s)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;');
+function updateCount(n) {
+  el.count.textContent = `${n ?? state.filtered.length} 件`;
 }
