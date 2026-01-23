@@ -1,6 +1,7 @@
 'use strict';
 
-const SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=0';
+const SHEET_CSV_URL =
+  'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=0';
 
 const state = {
   shops: [],
@@ -25,9 +26,10 @@ async function init() {
   try {
     state.shops = await loadShopsFromSheet();
 
-    state.genres = [...new Set(state.shops.flatMap(s => s.genre))].sort((a,b)=>a.localeCompare(b,'ja'));
-    renderChecks();
+    state.genres = [...new Set(state.shops.flatMap(s => s.genre))]
+      .sort((a, b) => a.localeCompare(b, 'ja'));
 
+    renderChecks();
     state.filtered = state.shops;
     renderList(state.filtered);
     updateCount();
@@ -42,23 +44,16 @@ async function init() {
 }
 
 async function loadShopsFromSheet() {
-  if (!SHEET_CSV_URL || SHEET_CSV_URL.includes('PASTE_YOUR')) {
-    throw new Error('SHEET_CSV_URL を設定してね');
-  }
-
   const res = await fetch(SHEET_CSV_URL, { cache: 'no-store' });
-  if (!res.ok) throw new Error('スプレッドシートCSVが読めません（公開設定を確認）');
-  const csv = await res.text();
+  if (!res.ok) throw new Error('スプレッドシートCSVが読めません（共有/公開設定を確認）');
 
+  const csv = await res.text();
   const shops = csvToShops(csv);
-  if (!shops.length) throw new Error('シートにデータがない or ヘッダ名が違うかも');
+
+  if (!shops.length) throw new Error('シートのヘッダ名が違う or データが空かも');
   return shops;
 }
 
-/**
- * CSV → shops配列
- * ヘッダ: name, genre, visited, walk, price, url, note
- */
 function csvToShops(csvText) {
   const lines = csvText
     .replace(/\r\n/g, '\n')
@@ -93,7 +88,7 @@ function csvToShops(csvText) {
   }).filter(Boolean);
 }
 
-/** ダブルクォート対応の超軽量CSV1行パーサ */
+// ダブルクォート対応の軽量CSVパーサ
 function parseCsvLine(line) {
   const out = [];
   let cur = '';
@@ -101,6 +96,7 @@ function parseCsvLine(line) {
 
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
+
     if (c === '"') {
       if (inQ && line[i + 1] === '"') { cur += '"'; i++; }
       else inQ = !inQ;
@@ -197,14 +193,14 @@ function updateCount() {
 
 function escapeAttr(s) {
   return String(s)
-    .replaceAll('&','&amp;')
-    .replaceAll('"','&quot;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;');
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }
 function escapeText(s) {
   return String(s)
-    .replaceAll('&','&amp;')
-    .replaceAll('<','&lt;')
-    .replaceAll('>','&gt;');
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }
