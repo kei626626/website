@@ -1,7 +1,7 @@
 'use strict';
 
 const SHEET_CSV_URL =
-  'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=40762363';
+  'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=640762363';
 
 const state = {
   shops: [],
