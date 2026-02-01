@@ -68,14 +68,9 @@ function csvToShops(csvText) {
   genre: String(obj.genre ?? '').split(',').map(s => s.trim()).filter(Boolean),
 
   visited: (() => {
-    const v = String(obj.visited ?? '').trim().toLowerCase();
-    return (
-      v === 'true' ||
-      v === 'yes' ||
-      v === 'はい' ||
-      v === '1'
-    );
-  })(),
+  const v = String(obj.visited ?? '').trim().toLowerCase();
+  return (v === 'true' || v === 'yes' || v === 'はい' || v === '1');
+})(),
 
   walk: Number(obj.walk) || 0,
   price: Number(obj.price) || 0,
