@@ -207,3 +207,33 @@ input[type="checkbox"]{
 .tag-link:hover{
   background: rgba(251,146,60,.1);
 }
+/* ヘッダー横並び */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-text {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ヘッダーボタンだけ少し小さめ */
+.header-btn {
+  white-space: nowrap;
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+/* スマホでは縦並び */
+@media (max-width: 480px) {
+  .header-row {
+    align-items: flex-start;
+  }
+
+  .header-btn {
+    margin-top: 8px;
+  }
+}
