@@ -1,7 +1,7 @@
 'use strict';
 
 const SHEET_CSV_URL =
-  'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=0';
+  'https://docs.google.com/spreadsheets/d/1sYe7QFk_rVwegNLtnX_S9TI_XlqdCuPQ8QlKv4gc_9M/export?format=csv&gid=40762363';
 
 const state = {
   shops: [],
@@ -64,14 +64,25 @@ function csvToShops(csvText) {
     if (!name) return null;
 
     return {
-      name,
-      genre: String(obj.genre ?? '').split(',').map(s => s.trim()).filter(Boolean),
-      visited: String(obj.visited ?? '').toLowerCase() === 'true',
-      walk: Number(obj.walk) || 0,
-      price: Number(obj.price) || 0,
-      url: String(obj.url ?? '').trim(),
-      note: String(obj.note ?? '').trim()
-    };
+  name,
+  genre: String(obj.genre ?? '').split(',').map(s => s.trim()).filter(Boolean),
+
+  visited: (() => {
+    const v = String(obj.visited ?? '').trim().toLowerCase();
+    return (
+      v === 'true' ||
+      v === 'yes' ||
+      v === 'はい' ||
+      v === '1'
+    );
+  })(),
+
+  walk: Number(obj.walk) || 0,
+  price: Number(obj.price) || 0,
+  url: String(obj.url ?? '').trim(),
+  note: String(obj.note ?? '').trim()
+};
+
   }).filter(Boolean);
 }
 
