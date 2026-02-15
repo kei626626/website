@@ -89,6 +89,29 @@ body{
   opacity:0;
   transform:translateX(-60px);
 }
+.screen.exit-right{
+  opacity:0;
+  transform:translateX(60px);
+}
+
+/* ============================================================
+   戻るボタン
+   ============================================================ */
+.back-btn{
+  display:inline-flex;align-items:center;gap:.25rem;
+  background:none;border:none;
+  color:var(--text-secondary);
+  font-size:.85rem;font-weight:500;
+  cursor:pointer;
+  padding:.25rem .1rem;
+  margin-bottom:.25rem;
+  transition:color 180ms ease,opacity 180ms ease;
+  flex-shrink:0;
+}
+.back-btn:hover{color:var(--text)}
+.back-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.back-btn:active{opacity:.7}
+.back-btn[hidden]{display:none}
 
 /* ============================================================
    スタート画面
@@ -181,6 +204,10 @@ body{
 .opt-btn:focus-visible{
   outline:2px solid var(--accent);
   outline-offset:2px;
+}
+.opt-btn.selected{
+  border-color:var(--accent);
+  background:var(--accent-light);
 }
 .opt-btn .opt-label{
   display:inline-flex;
@@ -325,6 +352,7 @@ body{
 
   <!-- ===================== 質問画面 ===================== -->
   <div id="question" class="screen">
+    <button type="button" class="back-btn" id="backBtn" hidden aria-label="前の質問に戻る">&#8592; 戻る</button>
     <div class="progress-area" aria-live="polite">
       <div class="progress-label" id="progressLabel">Q 1/10</div>
       <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -532,7 +560,8 @@ const PRIORITY = ["growth", "ops", "startup", "global", "stable"];
    アプリ状態
    ================================================================ */
 let currentQ = 0;
-const scores = { growth:0, ops:0, startup:0, global:0, stable:0 };
+/* 回答を配列に保持（index = 質問番号、値 = 選んだoptionのindex） */
+const answers = [];
 
 /* DOM */
 const $start    = document.getElementById("start");
@@ -540,6 +569,7 @@ const $question = document.getElementById("question");
 const $result   = document.getElementById("result");
 const $startBtn = document.getElementById("startBtn");
 const $retryBtn = document.getElementById("retryBtn");
+const $backBtn  = document.getElementById("backBtn");
 const $qText    = document.getElementById("qText");
 const $options  = document.getElementById("optionsWrap");
 const $progLabel= document.getElementById("progressLabel");
@@ -553,28 +583,48 @@ const $servicesW  = document.getElementById("servicesWrap");
 const $ctaBtn     = document.getElementById("ctaBtn");
 
 /* ================================================================
-   画面遷移ユーティリティ
+   画面遷移ユーティリティ（direction: "forward" | "back"）
    ================================================================ */
-function showScreen(show, hide) {
-  hide.classList.add("exit-left");
+function showScreen(show, hide, direction) {
+  const dir = direction || "forward";
+  const exitClass = dir === "back" ? "exit-right" : "exit-left";
+  hide.classList.add(exitClass);
   hide.classList.remove("active");
-  /* 少し待ってから表示画面をスライドイン */
+  /* 戻る場合は入る画面を左からスライドイン */
+  if (dir === "back") {
+    show.style.transform = "translateX(-60px)";
+  }
   requestAnimationFrame(() => {
-    show.classList.remove("exit-left");
+    show.classList.remove("exit-left", "exit-right");
+    show.style.transform = "";
     show.classList.add("active");
   });
-  /* exit-leftクラスをクリーンアップ */
-  setTimeout(() => hide.classList.remove("exit-left"), 350);
+  setTimeout(() => hide.classList.remove("exit-left", "exit-right"), 350);
 }
 
 /* ================================================================
-   質問のレンダリング
+   スコアを回答配列から再計算
    ================================================================ */
-function renderQuestion() {
+function calcScores() {
+  const scores = { growth:0, ops:0, startup:0, global:0, stable:0 };
+  answers.forEach((optIdx, qIdx) => {
+    const s = QUESTIONS[qIdx].options[optIdx].score;
+    for (const key in s) scores[key] += s[key];
+  });
+  return scores;
+}
+
+/* ================================================================
+   質問のレンダリング（direction: "forward" | "back"）
+   ================================================================ */
+function renderQuestion(direction) {
   const q = QUESTIONS[currentQ];
   const num = currentQ + 1;
   const total = QUESTIONS.length;
   const pct = (num / total) * 100;
+
+  /* 戻るボタンの表示制御 — Q1 では非表示 */
+  $backBtn.hidden = currentQ === 0;
 
   $progLabel.textContent = `Q ${num}/${total}`;
   $progFill.style.width = pct + "%";
@@ -583,25 +633,26 @@ function renderQuestion() {
   $qText.textContent = q.text;
   $options.innerHTML = "";
 
+  /* この質問に既に回答があれば取得 */
+  const prevAnswer = answers[currentQ] !== undefined ? answers[currentQ] : -1;
+
   const labels = ["A", "B", "C", "D"];
   q.options.forEach((opt, i) => {
     const btn = document.createElement("button");
     btn.type = "button";
-    btn.className = "opt-btn";
+    btn.className = "opt-btn" + (i === prevAnswer ? " selected" : "");
     btn.innerHTML = `<span class="opt-label">${labels[i]}</span><span>${opt.label}</span>`;
-    btn.addEventListener("click", () => selectOption(opt));
+    btn.addEventListener("click", () => selectOption(i));
     $options.appendChild(btn);
   });
 }
 
 /* ================================================================
-   選択肢タップ → スコア加算 → 次の質問 or 結果
+   選択肢タップ → 回答を保存 → 次の質問 or 結果
    ================================================================ */
-function selectOption(opt) {
-  /* スコア加算 */
-  for (const key in opt.score) {
-    scores[key] += opt.score[key];
-  }
+function selectOption(optIdx) {
+  /* 回答を保存（上書き可能） */
+  answers[currentQ] = optIdx;
 
   currentQ++;
 
@@ -610,7 +661,7 @@ function selectOption(opt) {
     $qText.style.opacity = 0;
     $options.style.opacity = 0;
     setTimeout(() => {
-      renderQuestion();
+      renderQuestion("forward");
       $qText.style.opacity = 1;
       $options.style.opacity = 1;
     }, 160);
@@ -620,9 +671,34 @@ function selectOption(opt) {
 }
 
 /* ================================================================
+   戻るボタン → 前の質問へ（逆方向スライド）
+   ================================================================ */
+function goBack() {
+  if (currentQ <= 0) return;
+  currentQ--;
+  /* 逆方向のフェードスライド */
+  $qText.style.opacity = 0;
+  $options.style.opacity = 0;
+  $qText.style.transition = "opacity 150ms ease, transform 150ms ease";
+  $options.style.transition = "opacity 150ms ease, transform 150ms ease";
+  $qText.style.transform = "translateX(30px)";
+  $options.style.transform = "translateX(30px)";
+  setTimeout(() => {
+    renderQuestion("back");
+    $qText.style.transform = "";
+    $options.style.transform = "";
+    $qText.style.opacity = 1;
+    $options.style.opacity = 1;
+  }, 160);
+}
+
+/* ================================================================
    結果の判定と表示
    ================================================================ */
 function showResult() {
+  /* 回答配列からスコアを再計算 */
+  const scores = calcScores();
+
   /* 最大スコアのタイプを取得（同点なら PRIORITY 順） */
   let maxScore = -1;
   let resultKey = PRIORITY[0];
@@ -673,19 +749,20 @@ function showResult() {
    ================================================================ */
 function resetAll() {
   currentQ = 0;
-  for (const key in scores) scores[key] = 0;
-  showScreen($start, $result);
+  answers.length = 0;
+  showScreen($start, $result, "back");
 }
 
 /* ================================================================
    イベントバインド
    ================================================================ */
 $startBtn.addEventListener("click", () => {
-  renderQuestion();
+  renderQuestion("forward");
   showScreen($question, $start);
 });
 
 $retryBtn.addEventListener("click", resetAll);
+$backBtn.addEventListener("click", goBack);
 
 /* 質問内テキストのフェード用 */
 $qText.style.transition = "opacity 150ms ease";
