@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>会社タイプ診断 — あなたの会社に最適なサービスを見つけよう</title>
+<style>
+/* ============================================================
+   テーマ変数 — ここを変更すればカラーを一括変更できます
+   ============================================================ */
+:root {
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-light: #dbeafe;
+  --bg: #ffffff;
+  --bg-secondary: #f8fafc;
+  --text: #1e293b;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --shadow: 0 1px 3px rgba(0,0,0,.08);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.1);
+  --radius: 12px;
+  --transition: 300ms cubic-bezier(.4,0,.2,1);
+  --max-w: 420px;
+}
+
+/* ============================================================
+   リセット & ベース
+   ============================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;
+  background:var(--bg-secondary);
+  color:var(--text);
+  line-height:1.6;
+  min-height:100dvh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* ============================================================
+   アプリコンテナ
+   ============================================================ */
+#app{
+  width:100%;
+  max-width:var(--max-w);
+  min-height:100dvh;
+  background:var(--bg);
+  position:relative;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+@media(min-width:480px){
+  #app{
+    min-height:auto;
+    height:92dvh;
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-md);
+    margin:1rem 0;
+  }
+}
+
+/* ============================================================
+   画面共通
+   ============================================================ */
+.screen{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  padding:1.5rem 1.25rem;
+  opacity:0;
+  transform:translateX(60px);
+  pointer-events:none;
+  transition:opacity var(--transition),transform var(--transition);
+  will-change:opacity,transform;
+}
+.screen.active{
+  opacity:1;
+  transform:translateX(0);
+  pointer-events:auto;
+  position:relative;
+}
+.screen.exit-left{
+  opacity:0;
+  transform:translateX(-60px);
+}
+
+/* ============================================================
+   スタート画面
+   ============================================================ */
+#start{justify-content:center;align-items:center;text-align:center;gap:1.5rem}
+#start h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
+#start p{color:var(--text-secondary);font-size:.9rem;max-width:300px}
+.btn-primary{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:var(--radius);
+  font-size:1rem;font-weight:600;
+  padding:.875rem 2.5rem;
+  cursor:pointer;
+  transition:background 180ms ease,transform 120ms ease,box-shadow 180ms ease;
+  box-shadow:var(--shadow);
+}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-primary:active{transform:scale(.97)}
+.btn-primary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* ============================================================
+   プログレスバー
+   ============================================================ */
+.progress-area{
+  flex-shrink:0;
+  padding-bottom:.75rem;
+}
+.progress-label{
+  font-size:.8rem;
+  font-weight:600;
+  color:var(--text-secondary);
+  margin-bottom:.4rem;
+}
+.progress-track{
+  width:100%;height:6px;
+  background:var(--border);
+  border-radius:3px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  border-radius:3px;
+  transition:width var(--transition);
+}
+
+/* ============================================================
+   質問画面
+   ============================================================ */
+#question{gap:1rem}
+.q-text{
+  font-size:1.1rem;
+  font-weight:600;
+  line-height:1.5;
+  flex-shrink:0;
+  padding:.5rem 0;
+}
+.options{
+  display:flex;
+  flex-direction:column;
+  gap:.625rem;
+  flex:1;
+  justify-content:center;
+}
+.opt-btn{
+  display:flex;align-items:center;
+  width:100%;
+  min-height:56px;
+  padding:.875rem 1rem;
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  font-size:.95rem;
+  color:var(--text);
+  text-align:left;
+  cursor:pointer;
+  transition:border-color 180ms ease,box-shadow 180ms ease,transform 120ms ease,background 180ms ease;
+  box-shadow:var(--shadow);
+  line-height:1.45;
+}
+.opt-btn:hover{
+  border-color:var(--accent);
+  box-shadow:0 2px 8px rgba(37,99,235,.12);
+}
+.opt-btn:active{
+  transform:scale(.98) translateY(1px);
+  background:var(--accent-light);
+}
+.opt-btn:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:2px;
+}
+.opt-btn .opt-label{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:26px;height:26px;
+  border-radius:50%;
+  background:var(--accent-light);
+  color:var(--accent);
+  font-weight:700;
+  font-size:.8rem;
+  margin-right:.75rem;
+  flex-shrink:0;
+}
+
+/* ============================================================
+   結果画面
+   ============================================================ */
+#result{
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  gap:1.25rem;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.result-badge{
+  display:inline-block;
+  background:var(--accent-light);
+  color:var(--accent);
+  font-size:.75rem;
+  font-weight:700;
+  padding:.3rem .9rem;
+  border-radius:999px;
+  letter-spacing:.04em;
+}
+.result-type{
+  font-size:1.5rem;
+  font-weight:800;
+  letter-spacing:-.02em;
+}
+.result-catch{
+  color:var(--accent);
+  font-size:.95rem;
+  font-weight:600;
+}
+/* イラスト / プレースホルダー */
+.result-img-wrap{
+  width:120px;height:120px;
+  margin:0 auto;
+  border-radius:50%;
+  overflow:hidden;
+  background:var(--accent-light);
+  display:flex;align-items:center;justify-content:center;
+}
+.result-img-wrap img{width:100%;height:100%;object-fit:cover}
+.result-img-wrap .placeholder{
+  font-size:2.5rem;
+  color:var(--accent);
+  opacity:.5;
+  user-select:none;
+}
+.result-desc{
+  font-size:.88rem;
+  color:var(--text-secondary);
+  line-height:1.7;
+  max-width:340px;
+}
+/* おすすめサービス */
+.services{
+  width:100%;
+  display:flex;flex-direction:column;gap:.5rem;
+  text-align:left;
+}
+.services h3{
+  font-size:.8rem;
+  font-weight:700;
+  color:var(--text-secondary);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  margin-bottom:.15rem;
+  text-align:center;
+}
+.svc-card{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.75rem 1rem;
+  background:var(--bg-secondary);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+.svc-icon{
+  width:36px;height:36px;
+  border-radius:8px;
+  background:var(--accent-light);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;
+  flex-shrink:0;
+}
+.svc-info{flex:1}
+.svc-name{font-size:.88rem;font-weight:600}
+.svc-note{font-size:.75rem;color:var(--text-secondary)}
+/* CTAボタン */
+.cta-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  background:var(--accent);color:#fff;
+  border:none;border-radius:var(--radius);
+  font-size:.95rem;font-weight:600;
+  padding:.8rem 2rem;
+  cursor:pointer;
+  transition:background 180ms ease,transform 120ms ease;
+  box-shadow:var(--shadow);
+  text-decoration:none;
+  width:100%;
+}
+.cta-btn:hover{background:var(--accent-hover)}
+.cta-btn:active{transform:scale(.97)}
+.cta-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.btn-ghost{
+  background:none;color:var(--text-secondary);
+  border:1.5px solid var(--border);
+  box-shadow:none;
+  font-size:.88rem;
+}
+.btn-ghost:hover{background:var(--bg-secondary);color:var(--text)}
+.result-actions{
+  display:flex;flex-direction:column;gap:.5rem;
+  width:100%;
+}
+</style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ===================== スタート画面 ===================== -->
+  <div id="start" class="screen active">
+    <h1>会社タイプ診断</h1>
+    <!-- ▼ ここでサブコピーを変更 -->
+    <p>10問の質問に答えるだけで、あなたの会社に最適なサービスが見つかります。所要時間：約2分</p>
+    <button class="btn-primary" id="startBtn" type="button">診断をはじめる</button>
+  </div>
+
+  <!-- ===================== 質問画面 ===================== -->
+  <div id="question" class="screen">
+    <div class="progress-area" aria-live="polite">
+      <div class="progress-label" id="progressLabel">Q 1/10</div>
+      <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-fill" id="progressFill" style="width:10%"></div>
+      </div>
+    </div>
+    <div class="q-text" id="qText"></div>
+    <div class="options" id="optionsWrap" role="group" aria-label="選択肢"></div>
+  </div>
+
+  <!-- ===================== 結果画面 ===================== -->
+  <div id="result" class="screen">
+    <div class="result-badge">あなたの会社タイプ</div>
+    <div class="result-img-wrap" id="resultImg"></div>
+    <div class="result-type" id="resultType"></div>
+    <div class="result-catch" id="resultCatch"></div>
+    <div class="result-desc" id="resultDesc"></div>
+    <div class="services" id="servicesWrap"></div>
+    <div class="result-actions">
+      <!-- ▼ CTAリンク先を変更する場合は href を差し替え -->
+      <a href="#" class="cta-btn" id="ctaBtn">詳しく相談する</a>
+      <button class="cta-btn btn-ghost" id="retryBtn" type="button">もう一度診断する</button>
+    </div>
+  </div>
+
+</div><!-- /#app -->
+
+<script>
+/* ================================================================
+   質問データ — 文言・スコアを変更する場合はここを編集
+   score キー: growth / ops / startup / global / stable
+   ================================================================ */
+const QUESTIONS = [
+  {
+    id: 1,
+    text: "現在の会社フェーズに最も近いものは？",
+    options: [
+      { label: "急成長中で人員・売上が毎年倍増している",        score: { growth:3, ops:0, startup:1, global:0, stable:0 } },
+      { label: "事業は安定し、業務効率の改善に注力している",    score: { growth:0, ops:3, startup:0, global:0, stable:1 } },
+      { label: "創業まもなく、プロダクトを模索中",              score: { growth:1, ops:0, startup:3, global:0, stable:0 } },
+      { label: "国内基盤を活かし海外展開を始めている",          score: { growth:0, ops:0, startup:0, global:3, stable:1 } }
+    ]
+  },
+  {
+    id: 2,
+    text: "月間の振込・送金はおおよそ何件ですか？",
+    options: [
+      { label: "500件以上 — 大量処理が必要",                  score: { growth:2, ops:2, startup:0, global:1, stable:0 } },
+      { label: "100〜499件 — 中規模",                         score: { growth:1, ops:1, startup:0, global:1, stable:1 } },
+      { label: "10〜99件 — まだ少ない",                       score: { growth:0, ops:0, startup:2, global:0, stable:2 } },
+      { label: "ほぼゼロ、これから整備する",                   score: { growth:0, ops:0, startup:3, global:0, stable:0 } }
+    ]
+  },
+  {
+    id: 3,
+    text: "海外との取引はありますか？",
+    options: [
+      { label: "日常的にある（仕入れ・販売ともに）",            score: { growth:0, ops:0, startup:0, global:3, stable:0 } },
+      { label: "一部ある（輸入 or 輸出のみ）",                 score: { growth:1, ops:0, startup:0, global:2, stable:0 } },
+      { label: "今後予定している",                              score: { growth:1, ops:0, startup:1, global:2, stable:0 } },
+      { label: "国内のみで完結している",                        score: { growth:0, ops:1, startup:0, global:0, stable:3 } }
+    ]
+  },
+  {
+    id: 4,
+    text: "バックオフィス業務で最も課題に感じることは？",
+    options: [
+      { label: "人手不足で処理が追いつかない",                  score: { growth:3, ops:1, startup:0, global:0, stable:0 } },
+      { label: "ミスの多さ・二重入力などの非効率",              score: { growth:0, ops:3, startup:0, global:0, stable:1 } },
+      { label: "そもそも仕組みが整っていない",                  score: { growth:0, ops:0, startup:3, global:0, stable:0 } },
+      { label: "多通貨や税制対応の複雑さ",                      score: { growth:0, ops:0, startup:0, global:3, stable:0 } }
+    ]
+  },
+  {
+    id: 5,
+    text: "ITツールの導入姿勢はどれに近いですか？",
+    options: [
+      { label: "最新ツールを積極的に試し、素早く導入する",      score: { growth:2, ops:0, startup:2, global:1, stable:0 } },
+      { label: "効果を検証してから慎重に導入する",              score: { growth:0, ops:2, startup:0, global:0, stable:2 } },
+      { label: "コストを最優先で決める",                        score: { growth:0, ops:1, startup:2, global:0, stable:1 } },
+      { label: "既存システムとの連携を重視する",                score: { growth:0, ops:2, startup:0, global:1, stable:2 } }
+    ]
+  },
+  {
+    id: 6,
+    text: "資金調達の状況は？",
+    options: [
+      { label: "VCやファンドから大型調達済み",                  score: { growth:2, ops:0, startup:2, global:1, stable:0 } },
+      { label: "銀行融資を中心に安定調達",                      score: { growth:0, ops:1, startup:0, global:0, stable:3 } },
+      { label: "自己資金中心、これからエクイティも検討",        score: { growth:1, ops:0, startup:3, global:0, stable:0 } },
+      { label: "海外投資家との交渉がある",                      score: { growth:1, ops:0, startup:0, global:3, stable:0 } }
+    ]
+  },
+  {
+    id: 7,
+    text: "従業員数の規模感は？",
+    options: [
+      { label: "300人以上",                                     score: { growth:1, ops:2, startup:0, global:2, stable:1 } },
+      { label: "50〜299人",                                     score: { growth:2, ops:1, startup:0, global:1, stable:1 } },
+      { label: "10〜49人",                                      score: { growth:1, ops:0, startup:2, global:0, stable:1 } },
+      { label: "10人未満",                                      score: { growth:0, ops:0, startup:3, global:0, stable:0 } }
+    ]
+  },
+  {
+    id: 8,
+    text: "今後1年で最も注力したいことは？",
+    options: [
+      { label: "売上・顧客数の拡大",                            score: { growth:3, ops:0, startup:1, global:1, stable:0 } },
+      { label: "コスト削減と業務効率化",                        score: { growth:0, ops:3, startup:0, global:0, stable:1 } },
+      { label: "新規事業・新プロダクトの立ち上げ",              score: { growth:1, ops:0, startup:3, global:0, stable:0 } },
+      { label: "リスク管理・ガバナンス強化",                    score: { growth:0, ops:1, startup:0, global:0, stable:3 } }
+    ]
+  },
+  {
+    id: 9,
+    text: "社内の意思決定スピードはどうですか？",
+    options: [
+      { label: "トップダウンで即決、スピード重視",              score: { growth:2, ops:0, startup:2, global:1, stable:0 } },
+      { label: "合議制だが比較的速い",                          score: { growth:1, ops:1, startup:0, global:1, stable:1 } },
+      { label: "稟議・承認フローが多く時間がかかる",            score: { growth:0, ops:2, startup:0, global:0, stable:2 } },
+      { label: "現場に権限委譲しフラットに進む",                score: { growth:1, ops:0, startup:3, global:0, stable:0 } }
+    ]
+  },
+  {
+    id: 10,
+    text: "パートナー企業に最も求めるものは？",
+    options: [
+      { label: "成長に合わせた柔軟なスケーラビリティ",          score: { growth:3, ops:0, startup:1, global:1, stable:0 } },
+      { label: "確実な運用とサポート体制",                      score: { growth:0, ops:1, startup:0, global:0, stable:3 } },
+      { label: "低コストでスモールスタートできること",          score: { growth:0, ops:0, startup:3, global:0, stable:1 } },
+      { label: "グローバル対応の実績とネットワーク",            score: { growth:0, ops:0, startup:0, global:3, stable:0 } }
+    ]
+  }
+];
+
+/* ================================================================
+   結果データ — タイプ名・キャッチ・説明・サービスを変更するにはここ
+   ================================================================ */
+const RESULTS = {
+  growth: {
+    type: "成長ドライブ型",
+    catch: "勢いを止めない、攻めの経営スタイル",
+    desc: "急拡大するビジネスに合わせ、スピーディーかつ大量の処理をこなせるインフラが求められます。柔軟にスケールし、リアルタイムな経営データを活用できるサービスが最適です。",
+    /* ▼ イラスト画像パスを変更する場合はここ */
+    img: "assets/growth.svg",
+    /* ▼ おすすめサービスを差し替える場合はここ */
+    services: [
+      { icon: "📊", name: "クラウド会計プロ", note: "リアルタイムレポートで即断即決", link: "#" },
+      { icon: "💳", name: "法人カード FAST", note: "利用限度を柔軟に拡張", link: "#" },
+      { icon: "🔄", name: "オートペイメント", note: "大量振込を自動処理", link: "#" }
+    ]
+  },
+  ops: {
+    type: "業務最適化型",
+    catch: "仕組みで勝つ、効率追求のプロ集団",
+    desc: "既存業務のムダを洗い出し、自動化と標準化で生産性を最大化します。ERPやワークフローと連携しやすいサービスが鍵になります。",
+    img: "assets/ops.svg",
+    services: [
+      { icon: "⚙️", name: "ワークフロー ERP連携", note: "二重入力を撲滅", link: "#" },
+      { icon: "📑", name: "電子請求書 SMART", note: "発行から消込まで自動", link: "#" },
+      { icon: "🤖", name: "AI経費チェック", note: "ミスを未然に検知", link: "#" }
+    ]
+  },
+  startup: {
+    type: "スタートアップ型",
+    catch: "ゼロから一を、身軽に駆け抜ける",
+    desc: "最小リソースで最大インパクトを狙うフェーズです。初期コストを抑えつつ素早く立ち上げられるサービスを選び、プロダクトに集中しましょう。",
+    img: "assets/startup.svg",
+    services: [
+      { icon: "🚀", name: "フリープラン口座", note: "月額0円で始められる", link: "#" },
+      { icon: "📱", name: "モバイル経費", note: "レシート撮影で即記帳", link: "#" },
+      { icon: "🏦", name: "スタートアップ融資", note: "審査最短3日", link: "#" }
+    ]
+  },
+  global: {
+    type: "グローバル展開型",
+    catch: "国境を越え、世界市場で戦う",
+    desc: "多通貨決済や海外送金、各国の税制対応など、国際ビジネス特有の複雑さをシンプルにするサービスが不可欠です。",
+    img: "assets/global.svg",
+    services: [
+      { icon: "🌍", name: "マルチカレンシー口座", note: "30通貨以上対応", link: "#" },
+      { icon: "✈️", name: "海外送金エクスプレス", note: "最短当日着金", link: "#" },
+      { icon: "📋", name: "国際税務アドバイザー", note: "各国コンプライアンス支援", link: "#" }
+    ]
+  },
+  stable: {
+    type: "安定運用型",
+    catch: "堅実と信頼で、長く続く経営を",
+    desc: "リスクを最小化し、確実にビジネスを継続させることを最優先に考えるスタイルです。安定稼働・手厚いサポートのサービスが安心です。",
+    img: "assets/stable.svg",
+    services: [
+      { icon: "🛡️", name: "セキュリティ GUARD", note: "24時間不正検知", link: "#" },
+      { icon: "☎️", name: "専任サポートデスク", note: "電話・チャットで即対応", link: "#" },
+      { icon: "📈", name: "安定運用ファンド", note: "低リスクで資産を守る", link: "#" }
+    ]
+  }
+};
+
+/* ================================================================
+   同点時の優先順位
+   ================================================================ */
+const PRIORITY = ["growth", "ops", "startup", "global", "stable"];
+
+/* ================================================================
+   アプリ状態
+   ================================================================ */
+let currentQ = 0;
+const scores = { growth:0, ops:0, startup:0, global:0, stable:0 };
+
+/* DOM */
+const $start    = document.getElementById("start");
+const $question = document.getElementById("question");
+const $result   = document.getElementById("result");
+const $startBtn = document.getElementById("startBtn");
+const $retryBtn = document.getElementById("retryBtn");
+const $qText    = document.getElementById("qText");
+const $options  = document.getElementById("optionsWrap");
+const $progLabel= document.getElementById("progressLabel");
+const $progFill = document.getElementById("progressFill");
+const $progTrack= document.querySelector(".progress-track");
+const $resultType = document.getElementById("resultType");
+const $resultCatch= document.getElementById("resultCatch");
+const $resultDesc = document.getElementById("resultDesc");
+const $resultImg  = document.getElementById("resultImg");
+const $servicesW  = document.getElementById("servicesWrap");
+const $ctaBtn     = document.getElementById("ctaBtn");
+
+/* ================================================================
+   画面遷移ユーティリティ
+   ================================================================ */
+function showScreen(show, hide) {
+  hide.classList.add("exit-left");
+  hide.classList.remove("active");
+  /* 少し待ってから表示画面をスライドイン */
+  requestAnimationFrame(() => {
+    show.classList.remove("exit-left");
+    show.classList.add("active");
+  });
+  /* exit-leftクラスをクリーンアップ */
+  setTimeout(() => hide.classList.remove("exit-left"), 350);
+}
+
+/* ================================================================
+   質問のレンダリング
+   ================================================================ */
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  const num = currentQ + 1;
+  const total = QUESTIONS.length;
+  const pct = (num / total) * 100;
+
+  $progLabel.textContent = `Q ${num}/${total}`;
+  $progFill.style.width = pct + "%";
+  $progTrack.setAttribute("aria-valuenow", Math.round(pct));
+
+  $qText.textContent = q.text;
+  $options.innerHTML = "";
+
+  const labels = ["A", "B", "C", "D"];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "opt-btn";
+    btn.innerHTML = `<span class="opt-label">${labels[i]}</span><span>${opt.label}</span>`;
+    btn.addEventListener("click", () => selectOption(opt));
+    $options.appendChild(btn);
+  });
+}
+
+/* ================================================================
+   選択肢タップ → スコア加算 → 次の質問 or 結果
+   ================================================================ */
+function selectOption(opt) {
+  /* スコア加算 */
+  for (const key in opt.score) {
+    scores[key] += opt.score[key];
+  }
+
+  currentQ++;
+
+  if (currentQ < QUESTIONS.length) {
+    /* 次の質問をスライドアニメーション */
+    $qText.style.opacity = 0;
+    $options.style.opacity = 0;
+    setTimeout(() => {
+      renderQuestion();
+      $qText.style.opacity = 1;
+      $options.style.opacity = 1;
+    }, 160);
+  } else {
+    showResult();
+  }
+}
+
+/* ================================================================
+   結果の判定と表示
+   ================================================================ */
+function showResult() {
+  /* 最大スコアのタイプを取得（同点なら PRIORITY 順） */
+  let maxScore = -1;
+  let resultKey = PRIORITY[0];
+  for (const key of PRIORITY) {
+    if (scores[key] > maxScore) {
+      maxScore = scores[key];
+      resultKey = key;
+    }
+  }
+
+  const r = RESULTS[resultKey];
+
+  $resultType.textContent = r.type;
+  $resultCatch.textContent = r.catch;
+  $resultDesc.textContent = r.desc;
+
+  /* イラスト or プレースホルダー */
+  const img = new Image();
+  img.src = r.img;
+  img.alt = r.type + " イラスト";
+  img.onload = () => { $resultImg.innerHTML = ""; $resultImg.appendChild(img); };
+  img.onerror = () => {
+    $resultImg.innerHTML = `<span class="placeholder" aria-hidden="true">&#128188;</span>`;
+  };
+
+  /* おすすめサービス */
+  $servicesW.innerHTML = `<h3>おすすめサービス</h3>`;
+  r.services.forEach(s => {
+    const card = document.createElement("div");
+    card.className = "svc-card";
+    card.innerHTML = `
+      <div class="svc-icon">${s.icon}</div>
+      <div class="svc-info">
+        <div class="svc-name">${s.name}</div>
+        <div class="svc-note">${s.note}</div>
+      </div>`;
+    $servicesW.appendChild(card);
+  });
+
+  /* ▼ CTAリンク先を変更する場合はここ */
+  $ctaBtn.href = "#";
+
+  showScreen($result, $question);
+}
+
+/* ================================================================
+   リセット
+   ================================================================ */
+function resetAll() {
+  currentQ = 0;
+  for (const key in scores) scores[key] = 0;
+  showScreen($start, $result);
+}
+
+/* ================================================================
+   イベントバインド
+   ================================================================ */
+$startBtn.addEventListener("click", () => {
+  renderQuestion();
+  showScreen($question, $start);
+});
+
+$retryBtn.addEventListener("click", resetAll);
+
+/* 質問内テキストのフェード用 */
+$qText.style.transition = "opacity 150ms ease";
+$options.style.transition = "opacity 150ms ease";
+</script>
+</body>
+</html>
