@@ -37,8 +37,8 @@ body{
   min-height:100dvh;
   display:flex;
   justify-content:center;
-  align-items:center;
-  overflow:hidden;
+  align-items:flex-start;
+  overflow-x:hidden;
 }
 
 /* ============================================================
@@ -50,17 +50,24 @@ body{
   min-height:100dvh;
   background:var(--bg);
   position:relative;
-  overflow:hidden;
+  overflow-x:hidden;
   display:flex;
   flex-direction:column;
 }
 @media(min-width:480px){
   #app{
-    min-height:auto;
-    height:92dvh;
+    margin:1rem 0;
+  }
+  /* スタート・質問画面はカード高さに収める */
+  #start,#question{
+    min-height:min(92dvh, 700px);
     border-radius:var(--radius);
     box-shadow:var(--shadow-md);
-    margin:1rem 0;
+  }
+  #result{
+    border-radius:var(--radius);
+    box-shadow:var(--shadow-md);
+    padding-bottom:2rem;
   }
 }
 
@@ -116,7 +123,8 @@ body{
 /* ============================================================
    スタート画面
    ============================================================ */
-#start{justify-content:center;align-items:center;text-align:center;gap:1.5rem}
+#start{justify-content:center;align-items:center;text-align:center;gap:1.5rem;min-height:100dvh}
+@media(min-width:480px){#start{min-height:0}}
 #start h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
 #start p{color:var(--text-secondary);font-size:.9rem;max-width:300px}
 .btn-primary{
@@ -162,7 +170,8 @@ body{
 /* ============================================================
    質問画面
    ============================================================ */
-#question{gap:1rem}
+#question{gap:1rem;min-height:100dvh}
+@media(min-width:480px){#question{min-height:0}}
 .q-text{
   font-size:1.1rem;
   font-weight:600;
@@ -227,12 +236,11 @@ body{
    結果画面
    ============================================================ */
 #result{
-  justify-content:center;
+  justify-content:flex-start;
   align-items:center;
   text-align:center;
   gap:1.25rem;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
+  padding-bottom:100px;
 }
 .result-badge{
   display:inline-block;
@@ -742,6 +750,7 @@ function showResult() {
   $ctaBtn.href = "#";
 
   showScreen($result, $question);
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 /* ================================================================
@@ -751,6 +760,7 @@ function resetAll() {
   currentQ = 0;
   answers.length = 0;
   showScreen($start, $result, "back");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 /* ================================================================
