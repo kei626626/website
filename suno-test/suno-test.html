@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sunoで体感する「音楽で世界観はここまで変わる」</title>
+<style>
+  :root{
+    --bg:#f7f7f4;
+    --ink:#1f2933;
+    --muted:#6b7280;
+    --card:#ffffff;
+    --accent:#2f6fed;
+    --accent2:#ffb84d;
+    --dark:#111827;
+    --line:#e5e7eb;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans JP", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  .deck{
+    width:100%;
+  }
+  .slide{
+    width:100vw;
+    min-height:100vh;
+    padding:56px 72px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    border-bottom:1px solid var(--line);
+    position:relative;
+    overflow:hidden;
+    page-break-after:always;
+  }
+  .slide::before{
+    content:"";
+    position:absolute;
+    right:-120px;
+    top:-120px;
+    width:360px;
+    height:360px;
+    border-radius:50%;
+    background:rgba(47,111,237,.08);
+  }
+  .slide::after{
+    content:"";
+    position:absolute;
+    left:-80px;
+    bottom:-100px;
+    width:260px;
+    height:260px;
+    border-radius:50%;
+    background:rgba(255,184,77,.16);
+  }
+  .content{position:relative; z-index:1; max-width:1120px; margin:0 auto; width:100%;}
+  .eyebrow{
+    color:var(--accent);
+    font-weight:700;
+    letter-spacing:.08em;
+    font-size:18px;
+    margin-bottom:16px;
+  }
+  h1{
+    font-size:64px;
+    line-height:1.14;
+    margin:0 0 24px;
+    letter-spacing:-.04em;
+  }
+  h2{
+    font-size:48px;
+    line-height:1.2;
+    margin:0 0 28px;
+    letter-spacing:-.03em;
+  }
+  h3{
+    font-size:28px;
+    margin:0 0 16px;
+  }
+  p, li{
+    font-size:24px;
+    line-height:1.65;
+  }
+  ul{
+    margin:0;
+    padding-left:1.2em;
+  }
+  .lead{
+    font-size:30px;
+    line-height:1.6;
+    color:#374151;
+  }
+  .grid2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:28px;
+    align-items:stretch;
+  }
+  .grid4{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:18px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:28px;
+    box-shadow:0 18px 50px rgba(17,24,39,.08);
+  }
+  .big{
+    font-size:42px;
+    font-weight:800;
+  }
+  .quote{
+    background:#fff;
+    
+    border-radius:18px;
+    padding:28px 32px;
+    box-shadow:0 18px 50px rgba(17,24,39,.08);
+    font-size:22px;
+    line-height:1.7;
+    white-space:pre-line;
+  }
+  .lyrics{
+    font-size:20px;
+    line-height:1.72;
+    columns:2;
+    column-gap:48px;
+  }
+  
+
+
+.mediaCard{
+  background:#ffffff;
+  border:1px solid var(--line);
+  border-radius:24px;
+  padding:26px;
+  box-shadow:0 18px 50px rgba(17,24,39,.08);
+}
+.dark .mediaCard{
+  background:#1f2937;
+  border-color:#374151;
+  color:#f9fafb;
+}
+.ytButton{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  min-height:56px;
+  border-radius:16px;
+  background:#ef4444;
+  color:#fff;
+  text-decoration:none;
+  font-size:20px;
+  font-weight:800;
+  margin-top:10px;
+}
+.ytButton:hover{
+  opacity:.88;
+}
+
+.sampleTopCard{
+  width:100%;
+  margin-bottom:24px;
+}
+.sampleBottom{
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:24px;
+  align-items:start;
+}
+
+.sampleLayout{
+  display:grid;
+  grid-template-columns:320px 1fr 420px;
+  gap:24px;
+  align-items:start;
+}
+
+.prompt{
+    background:#111827;
+    color:#f9fafb;
+    border-radius:24px;
+    padding:26px;
+    font-size:18px;
+    line-height:1.55;
+    white-space:pre-wrap;
+    max-height:58vh;
+    overflow:auto;
+  }
+  .tag{
+    display:inline-block;
+    padding:8px 14px;
+    border-radius:999px;
+    background:#eef4ff;
+    color:#1d4ed8;
+    font-weight:700;
+    margin:0 8px 8px 0;
+    font-size:18px;
+  }
+  .note{
+    color:var(--muted);
+    font-size:20px;
+  }
+  .slideNo{
+    position:absolute;
+    right:32px;
+    bottom:24px;
+    color:#9ca3af;
+    font-size:16px;
+    z-index:2;
+  }
+  .dark{
+    background:#111827;
+    color:#f9fafb;
+  }
+  .dark .lead,.dark .note{color:#d1d5db}
+  .dark .card{background:#1f2937;border-color:#374151;color:#f9fafb}
+  .dark::before{background:rgba(255,184,77,.16)}
+  .dark::after{background:rgba(47,111,237,.22)}
+  .accentTitle{
+    color:var(--accent);
+  }
+  @media print{
+    .slide{width:13.333in;height:7.5in;min-height:7.5in;padding:0.55in 0.75in;}
+    h1{font-size:44pt}
+    h2{font-size:34pt}
+    p,li{font-size:17pt}
+    .lead{font-size:21pt}
+    .prompt{font-size:10.5pt;max-height:4.5in}
+    .lyrics{font-size:10.5pt}
+  }
+</style>
+</head>
+<body>
+<div class="deck">
+
+<section class="slide dark">
+  <div class="content">
+    <div class="eyebrow">AI MUSIC DEMO / SUNO</div>
+    <h1>Sunoで体感する<br>「音楽で世界観は<br>ここまで変わる」</h1>
+    <p class="lead">同じ歌詞・同じ映像でも、BGMだけで作品は別物になる。</p>
+  </div>
+  <div class="slideNo">01</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <h2>今日やること</h2>
+    <div class="grid2">
+      <div class="card"><h3>1. Sunoって何？</h3><p>AIでボーカル付きの楽曲を生成できるサービス。</p></div>
+      <div class="card"><h3>2. BGMの重要性</h3><p>音楽が映像の印象・感情・テンポを大きく左右する。</p></div>
+      <div class="card"><h3>3. 同じ歌詞で比較</h3><p>同じ歌詞を使って、複数ジャンルの曲を聴き比べる。</p></div>
+      <div class="card"><h3>4. 音楽の表現</h3><p>AIは作業短縮だけでなく、表現の幅を広げるツール。</p></div>
+    </div>
+  </div>
+  <div class="slideNo">02</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <h2>Sunoって何？</h2>
+    <div class="grid2">
+      <div>
+        <p class="lead">歌詞や曲調の指示から、AIが楽曲を生成してくれるサービス。</p>
+        <ul>
+          <li>歌詞から曲を作れる</li>
+          <li>ジャンル指定ができる</li>
+          <li>ボーカル付きで生成できる</li>
+          <li>数十秒〜数分で試作できる</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>使えそうな場面</h3>
+        <p>
+          動画BGM / SNS動画 / 仮歌 / イベントOP / ネタ曲 / MV制作 / アニメOP風デモ
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="slideNo">03</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <h2>今回使用した歌詞</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>世界観</h3>
+        <span class="tag">深夜</span>
+        <span class="tag">終電</span>
+        <span class="tag">ネオン</span>
+        <span class="tag">疲れた日常</span>
+        <span class="tag">少し前向き</span>
+        <p class="note">この同じ歌詞を使って、曲調だけを変えた4種類の楽曲を生成。</p>
+      </div>
+      <div class="quote lyrics">冷めたカップ麺
+光るモニター
+また今日も
+最後の電車
+
+誰もいないホーム
+揺れる広告
+ネオンの海を
+ひとり歩いた
+
+「もう帰ろうか」
+つぶやいた声
+夜風に消えてく
+
+小さなため息も
+眠れない夢も
+ポケットに詰め込んで
+
+午前1時
+テックまはまだ眠らない
+
+光る街の隅で
+明日を探してる
+
+終電の窓に映る
+少し疲れた顔でも
+
+まだ消えない
+この夜を走ってく</div>
+    </div>
+  </div>
+  <div class="slideNo">04</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <div class="eyebrow">SAMPLE 01</div>
+    <h2>深夜アニメOP風</h2>
+
+<div class="sampleTopCard">
+<div class="card">
+        <h3>印象</h3>
+        <p class="big">普通にアニメ主題歌っぽい</p>
+        <span class="tag">エモ</span><span class="tag">青春</span><span class="tag">夜</span><span class="tag">疾走感</span>
+        <p class="note">比較の基準になる“正解版”。</p>
+      </div>
+</div>
+
+<div class="sampleBottom">
+<div class="prompt">1分〜1分30秒程度の長さ。
+
+1980年代の日本のシティポップや、昭和レトロなポップスを感じる、懐かしくエモーショナルな楽曲。
+
+深夜の東京、ネオン街、雨上がりの道路、古い駅、静かなコンビニ、カセットテープのようなノスタルジックな空気感をイメージする。
+
+切なさと温かさを同時に感じる、大人っぽくおしゃれな雰囲気。
+終電後の街をゆっくり走る車の中で聴こえるような、夜景に合うサウンドにする。
+
+レトロシンセ、温かいエレピ、ファンキーなベースライン、クリーンギター、柔らかいドラムマシン、きらめくパッド、アナログ感のある音色を使用。
+
+サビは懐かしく印象的で、1980年代アニメのエンディングテーマのような余韻を出す。
+
+女性ボーカル。
+柔らかく、少し息混じりで、感情的な歌声。
+
+イントロは短め。
+最初の10秒以内に歌が始まる。
+
+キーワード：
+シティポップ、昭和レトロ、東京の夜、ネオン、夜景、雨、ドライブ、カセットテープ、ノスタルジック、アニメED、都会的。</div>
+<div class="mediaCard">
+        <h3>YouTube / 音源リンク</h3>
+        
+        <a class="ytButton" href="https://youtu.be/UL8zZvDUnzU?si=CWRWAiOHROpmXnpN" target="_blank" rel="noopener">YouTubeで再生する</a>
+        <p class="note" style="margin-top:18px;">音声ファイル</p>
+        <audio controls style="width:100%;">
+          <source src="./深夜アニメOP風.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+</div>
+</div>
+
+  </div>
+  <div class="slideNo">05</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <div class="eyebrow">SAMPLE 02</div>
+    <h2>演歌 / 昭和歌謡風</h2>
+
+<div class="sampleTopCard">
+<div class="card">
+        <h3>印象</h3>
+        <p class="big">急に人生が重くなる</p>
+        <span class="tag">哀愁</span><span class="tag">ネオン</span><span class="tag">深夜</span><span class="tag">昭和</span>
+        <p class="note">同じ歌詞なのに、一気に“夜のドラマ”になるギャップ枠。</p>
+      </div>
+</div>
+
+<div class="sampleBottom">
+<div class="prompt">1分〜1分30秒程度の長さ。
+
+昭和の演歌やムード歌謡を感じる、哀愁たっぷりの日本的な楽曲。
+
+終電後の東京、雨に濡れたネオン街、無人の駅、光る看板、疲れた心がひとりで夜を歩いているような世界観。
+
+孤独感、懐かしさ、切なさ、静かな希望を強く感じる雰囲気にする。
+
+演歌特有のこぶし、情感の強い歌唱、ゆったりしたテンポ、ドラマチックなメロディを入れる。
+
+演奏には、演歌風ギター、ピアノ、ストリングス、柔らかいシンセ、深いリバーブを使用。
+
+昭和の深夜ドラマのエンディングテーマのような、レトロで映画的な雰囲気。
+
+女性ボーカル。
+大人っぽく、感情たっぷりで、少しハスキーな歌声。
+
+イントロは短め。
+最初の10秒以内に歌が始まる。
+
+キーワード：
+演歌、昭和歌謡、ムード歌謡、深夜、終電、東京、ネオン、雨、孤独、哀愁、夜景、感情的、日本的、レトロ。</div>
+<div class="mediaCard">
+        <h3>YouTube / 音源リンク</h3>
+        
+        <a class="ytButton" href="https://youtu.be/UL8zZvDUnzU?si=3zkFIKpanXZgcE_0&t=153" target="_blank" rel="noopener">YouTubeで再生する</a>
+        <p class="note" style="margin-top:18px;">音声ファイルを使う場合はこちら</p>
+        <audio controls style="width:100%;">
+          <source src="./演歌昭和歌謡風.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+</div>
+</div>
+
+  </div>
+  <div class="slideNo">06</div>
+</section>
+
+<section class="slide dark">
+  <div class="content">
+    <div class="eyebrow">SAMPLE 03</div>
+    <h2>ホラー / ダークアンビエント風</h2>
+
+<div class="sampleTopCard">
+<div class="card">
+        <h3>印象</h3>
+        <p class="big">テックまが怖い</p>
+        <span class="tag">不穏</span><span class="tag">ノイズ</span><span class="tag">違和感</span><span class="tag">深夜駅</span>
+        <p class="note">音が変わるだけで、同じ世界が“怖い作品”に変わる。</p>
+      </div>
+</div>
+
+<div class="sampleBottom">
+<div class="prompt">1分〜1分30秒程度の長さ。
+
+心理ホラーアニメや、深夜の都市伝説作品のような、不穏で不気味なダークアンビエント楽曲。
+
+終電後の無人駅、点滅するネオン、遠くで響く電車の音、冷たい雨、静まり返ったホームをイメージする。
+
+小さなマスコットキャラクターが、少しずつ不気味で怖い存在に見えてくるような違和感を出す。
+
+孤独感、不安感、夢の中にいるような感覚、現実が歪むような不気味さを演出する。
+
+低音ドローン、歪んだシンセ、逆再生音、グリッチノイズ、重いサブベース、不気味なパッド、金属的な残響、VHSノイズ、最小限の打楽器を使用。
+
+Aメロは静かで不穏。
+サビでは世界が崩れるように、より強い緊張感と不気味さを出す。
+
+女性ボーカル。
+囁くようで、遠くから聞こえる夢の中の声のような歌声。
+
+イントロは短く、不穏に。
+最初の10秒以内に歌が始まる。
+
+キーワード：
+心理ホラー、深夜の東京、無人駅、ネオン、雨、都市伝説、グリッチ、VHSノイズ、不気味、違和感、ダークアンビエント。</div>
+<div class="mediaCard">
+        <h3>YouTube / 音源リンク</h3>
+        <a class="ytButton" href="https://youtu.be/UL8zZvDUnzU?si=0oiR7ZGoSMCLS0MO&t=62" target="_blank" rel="noopener">YouTubeで再生する</a>
+        <p class="note" style="margin-top:18px;">音声ファイルを使う場合はこちら</p>
+        <audio controls style="width:100%;">
+          <source src="./ホラー.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+</div>
+</div>
+
+  </div>
+  <div class="slideNo">07</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <div class="eyebrow">SAMPLE 04</div>
+    <h2>シティポップ / 昭和レトロ風</h2>
+
+<div class="sampleTopCard">
+<div class="card">
+        <h3>印象</h3>
+        <p class="big">80年代アニメED感</p>
+        <span class="tag">レトロ</span><span class="tag">夜景</span><span class="tag">おしゃれ</span><span class="tag">ノスタルジー</span>
+        <p class="note">“切ないけどおしゃれ”に見える、余韻のある音楽表現。</p>
+      </div>
+</div>
+
+<div class="sampleBottom">
+<div class="prompt">1分〜1分30秒程度の長さ。
+
+1980年代の日本のシティポップや、昭和レトロなポップスを感じる、懐かしくエモーショナルな楽曲。
+
+深夜の東京、ネオン街、雨上がりの道路、古い駅、静かなコンビニ、カセットテープのようなノスタルジックな空気感をイメージする。
+
+切なさと温かさを同時に感じる、大人っぽくおしゃれな雰囲気。
+終電後の街をゆっくり走る車の中で聴こえるような、夜景に合うサウンドにする。
+
+レトロシンセ、温かいエレピ、ファンキーなベースライン、クリーンギター、柔らかいドラムマシン、きらめくパッド、アナログ感のある音色を使用。
+
+サビは懐かしく印象的で、1980年代アニメのエンディングテーマのような余韻を出す。
+
+女性ボーカル。
+柔らかく、少し息混じりで、感情的な歌声。
+
+イントロは短め。
+最初の10秒以内に歌が始まる。
+
+キーワード：
+シティポップ、昭和レトロ、東京の夜、ネオン、夜景、雨、ドライブ、カセットテープ、ノスタルジック、アニメED、都会的。</div>
+<div class="mediaCard">
+        <h3>YouTube / 音源リンク</h3>
+        <a class="ytButton" href="https://youtu.be/UL8zZvDUnzU?si=rFcKZwbuuV1Tc2pZ&t=297" target="_blank" rel="noopener">YouTubeで再生する</a>
+        <p class="note" style="margin-top:18px;">音声ファイルを使う場合はこちら</p>
+        <audio controls style="width:100%;">
+          <source src="./午前1時歌謡ショー.mp3" type="audio/mpeg">
+        </audio>
+      </div>
+</div>
+</div>
+
+  </div>
+  <div class="slideNo">08</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <h2>比較してみると…</h2>
+    <p class="lead">同じ歌詞でも、音楽の要素が変わるだけで“感情”が変わる。</p>
+    <div class="grid4">
+      <div class="card"><h3>曲調</h3><p>作品ジャンルが変わる</p></div>
+      <div class="card"><h3>音色</h3><p>世界の質感が変わる</p></div>
+      <div class="card"><h3>テンポ</h3><p>映像のスピード感が変わる</p></div>
+      <div class="card"><h3>ボーカル</h3><p>主人公の感情が変わる</p></div>
+    </div>
+  </div>
+  <div class="slideNo">09</div>
+</section>
+
+<section class="slide dark">
+  <div class="content">
+    <h2>音楽の表現って大事</h2>
+    <p class="lead">映像制作では、BGM・SE・間・テンポによって印象が大きく変わる。</p>
+    <div class="card">
+      <p class="big">AIは“作業を減らす”だけじゃなく、<br>「表現の幅を広げる」ツールにもなる。</p>
+    </div>
+  </div>
+  <div class="slideNo">10</div>
+</section>
+
+<section class="slide">
+  <div class="content">
+    <h2>ご清聴ありがとうございました</h2>
+    <p class="lead">Presented by テックま制作委員会（仮）</p>
+  </div>
+  <div class="slideNo">11</div>
+</section>
+
+</div>
+</body>
+</html>
