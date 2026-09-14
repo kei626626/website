@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#071a42">
+  <title>黒字化記念フォトフレーム</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <main class="camera-app">
+    <div class="camera-view" id="cameraView">
+      <video id="camera" autoplay muted playsinline></video>
+      <img id="photo" class="photo" alt="撮影した写真">
+
+      <!-- デザインは透明PNG。差し替える場合は、この画像だけ変更 -->
+      <img class="frame-image" src="./assets/frame-celebration.png" alt="">
+
+      <!-- 仮コピー。文字込みPNGに差し替える場合は削除可能 -->
+      <div class="frame-copy" aria-hidden="true">
+        <div class="frame-copy__top">
+          <span>WE DID IT!</span>
+          <strong>祝 黒字化達成</strong>
+        </div>
+        <div class="frame-copy__bottom">THANK YOU, EVERYONE!</div>
+      </div>
+
+      <div class="start" id="start">
+        <button id="startCamera" class="start__button">カメラを起動</button>
+        <p>ブラウザからカメラの使用を許可してください</p>
+      </div>
+
+      <div class="countdown" id="countdown" aria-live="assertive"></div>
+      <div class="flash" id="flash"></div>
+      <p class="error" id="error" role="alert"></p>
+    </div>
+
+    <div class="controls" id="shootControls">
+      <button id="switchCamera" class="control-button" aria-label="カメラを切り替える">↺</button>
+      <button id="shutter" class="shutter" aria-label="撮影する"></button>
+      <span class="control-spacer"></span>
+    </div>
+
+    <div class="result-controls" id="resultControls" hidden>
+      <button id="retake" class="result-button">撮り直す</button>
+      <button id="save" class="result-button result-button--primary">保存・共有</button>
+    </div>
+  </main>
+
+  <canvas id="output" width="1080" height="1440" hidden></canvas>
+  <script src="./js/camera.js"></script>
+</body>
+</html>
