@@ -6,13 +6,12 @@ const context = output.getContext('2d');
 
 const startPanel = document.querySelector('#start');
 const errorMessage = document.querySelector('#error');
-const countdown = document.querySelector('#countdown');
 const flash = document.querySelector('#flash');
 const shootControls = document.querySelector('#shootControls');
 const resultControls = document.querySelector('#resultControls');
 
 let mediaStream;
-let facingMode = 'user';
+let facingMode = 'environment';
 let photoBlob;
 let photoUrl;
 
@@ -70,57 +69,10 @@ function getCoverCrop(sourceWidth, sourceHeight, targetWidth, targetHeight) {
   return [0, (sourceHeight - height) / 2, sourceWidth, height];
 }
 
-function drawSpacedText(text, x, y, font, color, spacing) {
-  context.save();
-  context.font = font;
-  context.fillStyle = color;
-  context.textBaseline = 'middle';
-  context.shadowColor = 'rgba(0, 17, 54, .75)';
-  context.shadowBlur = 18;
-
-  const characters = [...text];
-  const widths = characters.map((character) => context.measureText(character).width);
-  const totalWidth = widths.reduce((total, width) => total + width, 0) + spacing * (characters.length - 1);
-  let positionX = x - totalWidth / 2;
-
-  characters.forEach((character, index) => {
-    context.fillText(character, positionX, y);
-    positionX += widths[index] + spacing;
-  });
-
-  context.restore();
-}
-
-function drawFrameCopy() {
-  drawSpacedText('WE DID IT!', OUTPUT_WIDTH / 2, 87, '900 29px system-ui, sans-serif', '#dbe8ff', 7);
-
-  context.save();
-  context.fillStyle = '#ffffff';
-  context.font = '950 76px "Noto Sans JP", system-ui, sans-serif';
-  context.textAlign = 'center';
-  context.textBaseline = 'middle';
-  context.shadowColor = 'rgba(0, 17, 54, .75)';
-  context.shadowBlur = 18;
-  context.fillText('祝 黒字化達成', OUTPUT_WIDTH / 2, 154);
-  context.restore();
-
-  drawSpacedText('THANK YOU, EVERYONE!', OUTPUT_WIDTH / 2, OUTPUT_HEIGHT - 79, '900 28px system-ui, sans-serif', '#ffffff', 5);
-}
-
-async function runCountdown() {
-  for (const number of [3, 2, 1]) {
-    countdown.textContent = number;
-    countdown.classList.add('is-visible');
-    await new Promise((resolve) => setTimeout(resolve, 650));
-  }
-  countdown.classList.remove('is-visible');
-}
-
 async function takePhoto() {
   if (!mediaStream || camera.readyState < 2) return;
 
   document.querySelector('#shutter').disabled = true;
-  await runCountdown();
 
   if (!frameImage.complete) {
     await frameImage.decode();
@@ -144,7 +96,6 @@ async function takePhoto() {
   context.drawImage(camera, ...crop, 0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
   context.restore();
   context.drawImage(frameImage, 0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
-  drawFrameCopy();
 
   photoBlob = await new Promise((resolve) => output.toBlob(resolve, 'image/jpeg', 0.94));
   photoUrl = URL.createObjectURL(photoBlob);

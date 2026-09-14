@@ -25,4 +25,9 @@
     <path d="M103 560l13 26 29 4-21 20 5 29-26-14-26 14 5-29-21-20 29-4z" fill="#f7c948"/>
     <path d="M969 600l10 20 23 3-17 16 4 23-20-11-20 11 4-23-17-16 23-3z" fill="#ffffff"/>
   </g>
+  <g text-anchor="middle" font-family="Noto Sans, Arial, sans-serif" font-weight="800" fill="#fff">
+    <text x="540" y="92" font-size="31" letter-spacing="7" fill="#dbe8ff">WE DID IT!</text>
+    <text x="540" y="178" font-size="74">PROFIT ACHIEVED</text>
+    <text x="540" y="1370" font-size="29" letter-spacing="4">THANK YOU, EVERYONE!</text>
+  </g>
 </svg>

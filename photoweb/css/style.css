@@ -51,8 +51,7 @@ button { font: inherit; }
 
 #camera,
 .photo,
-.frame-image,
-.frame-copy {
+.frame-image {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -74,48 +73,6 @@ button { font: inherit; }
   z-index: 2;
   object-fit: fill;
   pointer-events: none;
-}
-
-.frame-copy {
-  z-index: 3;
-  pointer-events: none;
-  color: white;
-  text-align: center;
-  text-shadow: 0 3px 15px rgba(0, 17, 54, .75);
-}
-
-.frame-copy__top {
-  position: absolute;
-  top: 4.8%;
-  left: 7%;
-  right: 7%;
-}
-
-.frame-copy__top span {
-  display: block;
-  margin-bottom: 2px;
-  color: #dbe8ff;
-  font-size: clamp(10px, 2.7vw, 14px);
-  font-weight: 800;
-  letter-spacing: .23em;
-}
-
-.frame-copy__top strong {
-  display: block;
-  font-size: clamp(25px, 8vw, 44px);
-  font-weight: 950;
-  line-height: 1.05;
-  letter-spacing: .04em;
-}
-
-.frame-copy__bottom {
-  position: absolute;
-  left: 7%;
-  right: 7%;
-  bottom: 4.6%;
-  font-size: clamp(10px, 2.8vw, 15px);
-  font-weight: 850;
-  letter-spacing: .16em;
 }
 
 .start {
@@ -162,21 +119,6 @@ button { font: inherit; }
   color: white;
   background: rgba(121, 15, 36, .94);
 }
-
-.countdown {
-  position: absolute;
-  inset: 0;
-  z-index: 7;
-  display: none;
-  place-items: center;
-  color: white;
-  background: rgba(0, 18, 58, .25);
-  font-size: clamp(90px, 34vw, 180px);
-  font-weight: 950;
-  text-shadow: 0 8px 28px rgba(0, 0, 0, .65);
-}
-
-.countdown.is-visible { display: grid; }
 
 .flash {
   position: absolute;
