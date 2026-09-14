@@ -8,18 +8,31 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-  <main class="camera-app">
+  <main class="frame-selection" id="frameSelection">
+    <header class="selection-header">
+      <p>KUROJI CELEBRATION</p>
+      <h1>フレームを選んでください</h1>
+    </header>
+
+    <div class="frame-options">
+      <button class="frame-option" data-frame="./assets/frame-premium.png?v=4">
+        <span class="frame-thumbnail"><img src="./assets/frame-premium.png?v=4" alt="ゴールドの黒字化記念フレーム"></span>
+        <strong>プレミアム</strong>
+      </button>
+      <button class="frame-option" data-frame="./assets/frame-pop-tekkuma.png?v=4">
+        <span class="frame-thumbnail"><img src="./assets/frame-pop-tekkuma.png?v=4" alt="クマを使ったポップな黒字化記念フレーム"></span>
+        <strong>てっくまポップ</strong>
+      </button>
+    </div>
+  </main>
+
+  <main class="camera-app" id="cameraApp" hidden>
     <div class="camera-view" id="cameraView">
       <video id="camera" autoplay muted playsinline></video>
       <img id="photo" class="photo" alt="撮影した写真">
 
       <!-- デザインは透明PNG。差し替える場合は、この画像だけ変更 -->
-      <img class="frame-image" src="./assets/frame-celebration.png" alt="">
-
-      <div class="start" id="start">
-        <button id="startCamera" class="start__button">カメラを起動</button>
-        <p>ブラウザからカメラの使用を許可してください</p>
-      </div>
+      <img class="frame-image" id="frameImage" alt="">
 
       <div class="flash" id="flash"></div>
       <p class="error" id="error" role="alert"></p>
@@ -34,10 +47,11 @@
     <div class="result-controls" id="resultControls" hidden>
       <button id="retake" class="result-button">撮り直す</button>
       <button id="save" class="result-button result-button--primary">保存・共有</button>
+      <button id="backToIndex" class="result-button result-button--back">フレーム選択に戻る</button>
     </div>
   </main>
 
   <canvas id="output" width="1080" height="1440" hidden></canvas>
-  <script src="./js/camera.js"></script>
+  <script src="./js/camera.js?v=4"></script>
 </body>
 </html>
