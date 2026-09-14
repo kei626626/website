@@ -4,7 +4,8 @@ const frameImage = document.querySelector('.frame-image');
 const output = document.querySelector('#output');
 const context = output.getContext('2d');
 
-const startPanel = document.querySelector('#start');
+const frameSelection = document.querySelector('#frameSelection');
+const cameraApp = document.querySelector('#cameraApp');
 const errorMessage = document.querySelector('#error');
 const flash = document.querySelector('#flash');
 const shootControls = document.querySelector('#shootControls');
@@ -12,6 +13,7 @@ const resultControls = document.querySelector('#resultControls');
 
 let mediaStream;
 let facingMode = 'environment';
+let activeFacingMode = 'environment';
 let photoBlob;
 let photoUrl;
 
@@ -38,19 +40,30 @@ async function openCamera() {
   mediaStream?.getTracks().forEach((track) => track.stop());
 
   try {
-    mediaStream = await navigator.mediaDevices.getUserMedia({
-      video: {
-        facingMode: { ideal: facingMode },
-        width: { ideal: 1920 },
-        height: { ideal: 1440 }
-      },
-      audio: false
-    });
+    try {
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { exact: facingMode },
+          width: { ideal: 1920 },
+          height: { ideal: 1440 }
+        },
+        audio: false
+      });
+    } catch (exactCameraError) {
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: { ideal: facingMode },
+          width: { ideal: 1920 },
+          height: { ideal: 1440 }
+        },
+        audio: false
+      });
+    }
 
     camera.srcObject = mediaStream;
-    camera.classList.toggle('is-mirrored', facingMode === 'user');
+    activeFacingMode = mediaStream.getVideoTracks()[0]?.getSettings().facingMode || facingMode;
+    camera.classList.toggle('is-mirrored', activeFacingMode === 'user');
     await camera.play();
-    startPanel.hidden = true;
   } catch (error) {
     showError('カメラを起動できませんでした。ブラウザの設定でカメラを許可してください。');
   }
@@ -88,7 +101,7 @@ async function takePhoto() {
   context.clearRect(0, 0, OUTPUT_WIDTH, OUTPUT_HEIGHT);
   context.save();
 
-  if (facingMode === 'user') {
+  if (activeFacingMode === 'user') {
     context.translate(OUTPUT_WIDTH, 0);
     context.scale(-1, 1);
   }
@@ -124,6 +137,34 @@ function retakePhoto() {
   photoUrl = undefined;
 }
 
+async function selectFrame(framePath) {
+  facingMode = 'environment';
+  activeFacingMode = 'environment';
+  frameImage.src = framePath;
+  frameSelection.hidden = true;
+  cameraApp.hidden = false;
+  shootControls.hidden = false;
+  resultControls.hidden = true;
+  await openCamera();
+}
+
+function backToFrameSelection() {
+  mediaStream?.getTracks().forEach((track) => track.stop());
+  mediaStream = undefined;
+  camera.srcObject = null;
+  hideError();
+
+  if (photoUrl) URL.revokeObjectURL(photoUrl);
+  photo.removeAttribute('src');
+  photo.style.display = 'none';
+  camera.style.display = 'block';
+  photoBlob = undefined;
+  photoUrl = undefined;
+
+  cameraApp.hidden = true;
+  frameSelection.hidden = false;
+}
+
 async function savePhoto() {
   if (!photoBlob) return;
 
@@ -147,7 +188,9 @@ async function savePhoto() {
   download.remove();
 }
 
-document.querySelector('#startCamera').addEventListener('click', openCamera);
+document.querySelectorAll('.frame-option').forEach((button) => {
+  button.addEventListener('click', () => selectFrame(button.dataset.frame));
+});
 document.querySelector('#switchCamera').addEventListener('click', async () => {
   facingMode = facingMode === 'user' ? 'environment' : 'user';
   await openCamera();
@@ -155,6 +198,7 @@ document.querySelector('#switchCamera').addEventListener('click', async () => {
 document.querySelector('#shutter').addEventListener('click', takePhoto);
 document.querySelector('#retake').addEventListener('click', retakePhoto);
 document.querySelector('#save').addEventListener('click', savePhoto);
+document.querySelector('#backToIndex').addEventListener('click', backToFrameSelection);
 
 window.addEventListener('pagehide', () => {
   mediaStream?.getTracks().forEach((track) => track.stop());
