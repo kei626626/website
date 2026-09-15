@@ -196,6 +196,7 @@ document.querySelector('#switchCamera').addEventListener('click', async () => {
   await openCamera();
 });
 document.querySelector('#shutter').addEventListener('click', takePhoto);
+document.querySelector('#backBeforeShoot').addEventListener('click', backToFrameSelection);
 document.querySelector('#retake').addEventListener('click', retakePhoto);
 document.querySelector('#save').addEventListener('click', savePhoto);
 document.querySelector('#backToIndex').addEventListener('click', backToFrameSelection);
