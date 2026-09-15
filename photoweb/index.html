@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="theme-color" content="#071a42">
   <title>黒字化記念フォトフレーム</title>
-  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/style.css?v=5">
 </head>
 <body>
   <main class="frame-selection" id="frameSelection">
@@ -39,9 +39,12 @@
     </div>
 
     <div class="controls" id="shootControls">
-      <button id="switchCamera" class="control-button" aria-label="カメラを切り替える">↺</button>
+      <button id="backBeforeShoot" class="back-before-shoot" aria-label="フレーム選択に戻る">
+        <span aria-hidden="true">←</span>
+        <span>フレーム</span>
+      </button>
       <button id="shutter" class="shutter" aria-label="撮影する"></button>
-      <span class="control-spacer"></span>
+      <button id="switchCamera" class="control-button" aria-label="カメラを切り替える">↺</button>
     </div>
 
     <div class="result-controls" id="resultControls" hidden>
@@ -52,6 +55,6 @@
   </main>
 
   <canvas id="output" width="1080" height="1440" hidden></canvas>
-  <script src="./js/camera.js?v=4"></script>
+  <script src="./js/camera.js?v=5"></script>
 </body>
 </html>
