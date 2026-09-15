@@ -199,7 +199,7 @@ button { font: inherit; }
 
 .controls {
   display: grid;
-  grid-template-columns: 56px 1fr 56px;
+  grid-template-columns: 76px 1fr 76px;
   align-items: center;
   gap: 12px;
 }
@@ -207,6 +207,7 @@ button { font: inherit; }
 .controls[hidden] { display: none; }
 
 .control-button,
+.back-before-shoot,
 .shutter,
 .result-button {
   border: 0;
@@ -217,9 +218,37 @@ button { font: inherit; }
 .control-button {
   width: 52px;
   height: 52px;
+  margin-left: auto;
   border: 1px solid rgba(255, 255, 255, .28);
   border-radius: 50%;
   font-size: 1.35rem;
+}
+
+.back-before-shoot {
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  min-width: 68px;
+  padding: 6px 4px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-size: .68rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.back-before-shoot span:first-child {
+  color: var(--text);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.back-before-shoot:focus-visible,
+.control-button:focus-visible,
+.shutter:focus-visible,
+.result-button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .shutter {
