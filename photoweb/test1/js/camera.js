@@ -20,6 +20,8 @@ let photoUrl;
 const OUTPUT_WIDTH = 1080;
 const OUTPUT_HEIGHT = 1440;
 
+document.documentElement.classList.toggle('is-android', /Android/i.test(navigator.userAgent));
+
 function showError(message) {
   errorMessage.textContent = message;
   errorMessage.style.display = 'block';
