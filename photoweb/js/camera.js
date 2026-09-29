@@ -20,6 +20,8 @@ let photoUrl;
 const OUTPUT_WIDTH = 1080;
 const OUTPUT_HEIGHT = 1440;
 
+document.documentElement.classList.toggle('is-android', /Android/i.test(navigator.userAgent));
+
 function showError(message) {
   errorMessage.textContent = message;
   errorMessage.style.display = 'block';
@@ -115,6 +117,7 @@ async function takePhoto() {
   photo.src = photoUrl;
   photo.style.display = 'block';
   camera.style.display = 'none';
+  frameImage.style.display = 'none';
 
   flash.classList.remove('is-active');
   void flash.offsetWidth;
@@ -128,6 +131,7 @@ async function takePhoto() {
 function retakePhoto() {
   photo.style.display = 'none';
   camera.style.display = 'block';
+  frameImage.style.display = 'block';
   shootControls.hidden = false;
   resultControls.hidden = true;
 
@@ -141,6 +145,7 @@ async function selectFrame(framePath) {
   facingMode = 'environment';
   activeFacingMode = 'environment';
   frameImage.src = framePath;
+  frameImage.style.display = 'block';
   frameSelection.hidden = true;
   cameraApp.hidden = false;
   shootControls.hidden = false;
@@ -158,11 +163,17 @@ function backToFrameSelection() {
   photo.removeAttribute('src');
   photo.style.display = 'none';
   camera.style.display = 'block';
+  frameImage.style.display = 'block';
   photoBlob = undefined;
   photoUrl = undefined;
 
   cameraApp.hidden = true;
   frameSelection.hidden = false;
+}
+
+function isIOSDevice() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 }
 
 async function savePhoto() {
@@ -171,9 +182,11 @@ async function savePhoto() {
   const filename = `kuroji-celebration-${Date.now()}.jpg`;
   const file = new File([photoBlob], filename, { type: 'image/jpeg' });
 
-  if (navigator.canShare?.({ files: [file] })) {
+  // iPhone/iPadはWebページから写真アプリへ直接保存できないため、
+  // iOSの保存画面を開き、「画像を保存」を選んでもらう。
+  if (isIOSDevice() && navigator.canShare?.({ files: [file] })) {
     try {
-      await navigator.share({ files: [file], title: '黒字化記念フォト' });
+      await navigator.share({ files: [file], title: '黒字化記念フォトを保存' });
       return;
     } catch (error) {
       if (error.name === 'AbortError') return;
@@ -183,6 +196,7 @@ async function savePhoto() {
   const download = document.createElement('a');
   download.href = photoUrl;
   download.download = filename;
+  download.rel = 'noopener';
   document.body.appendChild(download);
   download.click();
   download.remove();

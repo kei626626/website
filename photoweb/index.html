@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="theme-color" content="#071a42">
   <title>黒字化記念フォトフレーム</title>
-  <link rel="stylesheet" href="./css/style.css?v=5">
+  <link rel="stylesheet" href="./css/style.css?v=8">
 </head>
 <body>
   <main class="frame-selection" id="frameSelection">
@@ -13,6 +13,15 @@
       <p>KUROJI CELEBRATION</p>
       <h1>フレームを選んでください</h1>
     </header>
+
+    <section class="camera-permission-notice" aria-labelledby="cameraNoticeTitle">
+      <span class="notice-mark" aria-hidden="true">!</span>
+      <div>
+        <h2 id="cameraNoticeTitle">撮影前にご確認ください</h2>
+        <p>フレームを選んだあと、カメラの確認画面が表示されます。必ず<strong>「許可」</strong>をタップしてください。</p>
+        <p class="android-help">Androidでカメラが映らない場合は、ブラウザのカメラ設定を「許可」にしてページを再読み込みしてください。</p>
+      </div>
+    </section>
 
     <div class="frame-options">
       <button class="frame-option" data-frame="./assets/frame-premium.png?v=4">
@@ -49,12 +58,12 @@
 
     <div class="result-controls" id="resultControls" hidden>
       <button id="retake" class="result-button">撮り直す</button>
-      <button id="save" class="result-button result-button--primary">保存・共有</button>
+      <button id="save" class="result-button result-button--primary">端末に保存</button>
       <button id="backToIndex" class="result-button result-button--back">フレーム選択に戻る</button>
     </div>
   </main>
 
   <canvas id="output" width="1080" height="1440" hidden></canvas>
-  <script src="./js/camera.js?v=5"></script>
+  <script src="./js/camera.js?v=8"></script>
 </body>
 </html>
