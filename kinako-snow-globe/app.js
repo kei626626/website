@@ -94,9 +94,9 @@
       const p = {
         x: restX, y: 0, vx: 0, vy: 0, r: size,
         bound: type === 'star' ? size * 2.35 : type === 'glow' ? size * 3.2 : size,
-        restX, inset, type,
+        restX, spread: (restX - width / 2) / (radius * .88), inset, type,
         a: type === 'glow' ? .35 + Math.random() * .4 : .5 + Math.random() * .5,
-        twinkle: Math.random() * Math.PI * 2
+        twinkle: Math.random() * Math.PI * 2, openingDelay: 0
       };
       const dx = p.x - width / 2;
       const limit = radius - p.bound - 2 - p.inset;
@@ -106,11 +106,27 @@
     }
   }
 
+  function openingSnowfall() {
+    const cx = width / 2, cy = height / 2;
+    for (const p of particles) {
+      const horizontal = (Math.random() - .5) * radius * 1.55;
+      const circleTop = cy - Math.sqrt(Math.max(0, (radius - p.bound - 3) ** 2 - horizontal ** 2));
+      p.x = cx + horizontal;
+      p.y = circleTop + Math.random() * radius * .14;
+      p.vx = (Math.random() - .5) * .55;
+      p.vy = .02 + Math.random() * .08;
+      p.openingDelay = Math.floor(Math.random() * 72);
+      containParticle(p, cx, cy);
+    }
+  }
+
   function burst(strength = 1) {
     navigator.vibrate?.(20);
+    const cx = width / 2;
     for (const p of particles) {
-      p.vx += (Math.random() - .5) * 4.8 * strength;
-      p.vy -= (1.8 + Math.random() * 4.8) * strength;
+      const outward = (p.x - cx) / Math.max(1, radius);
+      p.vx += ((Math.random() - .5) * 9 + outward * 2.6) * strength;
+      p.vy -= (2.2 + Math.random() * 5.8) * strength;
     }
     hint.style.opacity = '0';
   }
@@ -148,15 +164,26 @@
 
   function update() {
     const cx = width / 2, cy = height / 2;
+    const gravityLength = Math.max(.0001, Math.hypot(gx, gy));
+    const gravityX = gx / gravityLength, gravityY = gy / gravityLength;
+    const tangentX = gravityY, tangentY = -gravityX;
     ctx.clearRect(0, 0, width, height);
 
     for (const p of particles) {
       p.vx += gx;
-      p.vy += gy * (p.type === 'snow' ? .45 : .85);
-      const nearBottom = p.y > cy + radius * .55;
-      if (nearBottom && Math.abs(tiltSignal) < .018 && Math.abs(p.vx) < .5) {
-        p.vx += (p.restX - p.x) * .0015;
-      } else if (Math.abs(tiltSignal) >= .018) {
+      const fallingScale = p.openingDelay > 0 ? .055 : (p.type === 'snow' ? .45 : .85);
+      p.vy += gy * fallingScale;
+      if (p.openingDelay > 0) p.openingDelay--;
+      const relativeX = p.x - cx, relativeY = p.y - cy;
+      const alongGravity = relativeX * gravityX + relativeY * gravityY;
+      if (alongGravity > radius * .38) {
+        const tangentPosition = relativeX * tangentX + relativeY * tangentY;
+        const targetTangent = p.spread * radius * .72;
+        const laneForce = Math.max(-.085, Math.min(.085, (targetTangent - tangentPosition) * .0024));
+        p.vx += tangentX * laneForce;
+        p.vy += tangentY * laneForce;
+      }
+      if (Math.abs(tiltSignal) >= .018) {
         p.vx += (Math.random() - .5) * .024;
         p.vy -= Math.random() * .007;
       }
@@ -172,9 +199,9 @@
           p.vy += (dy / Math.sqrt(dist2)) * force;
         }
       }
-      p.vx = Math.max(-5.2, Math.min(5.2, p.vx * .99));
+      p.vx = Math.max(-7.5, Math.min(7.5, p.vx * .99));
       const verticalDrag = p.type === 'snow' ? .986 : .99;
-      p.vy = Math.max(-5.2, Math.min(5.2, p.vy * verticalDrag));
+      p.vy = Math.max(-7.5, Math.min(7.5, p.vy * verticalDrag));
       p.x += p.vx; p.y += p.vy;
       containParticle(p, cx, cy);
     }
@@ -270,6 +297,7 @@
   }
   function finishTutorial() {
     tutorial.classList.remove('is-open'); localStorage.setItem('kinako-tutorial', 'done');
+    openingSnowfall();
     // iOS requires requestPermission() to run directly from a button tap.
     // Always offer that button after the tutorial, including when the visitor
     // previously selected touch-only mode and later reopens the guide.
@@ -295,6 +323,7 @@
   resize(); seed(); setStep(0); update();
   if (localStorage.getItem('kinako-tutorial') === 'done') {
     tutorial.classList.remove('is-open');
+    openingSnowfall();
     if (needsMotionPermission() && localStorage.getItem('kinako-motion') === 'enabled') {
       allowMotionBtn.textContent = 'センサーを再開';
       permissionSheet.hidden = false;
