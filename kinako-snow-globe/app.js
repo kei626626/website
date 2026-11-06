@@ -6,7 +6,6 @@
   const permissionSheet = document.querySelector('#permissionSheet');
   const nextBtn = document.querySelector('#nextBtn');
   const backBtn = document.querySelector('#backBtn');
-  const forwardButtonImage = document.querySelector('#forwardButtonImage');
   const forwardButtonLabel = document.querySelector('#forwardButtonLabel');
   const skipBtn = document.querySelector('#skipBtn');
   const infoBtn = document.querySelector('#infoBtn');
@@ -248,7 +247,6 @@
     tutorial.querySelectorAll('.dots i').forEach((dot, i) => dot.classList.toggle('active', i === step));
     backBtn.hidden = step === 0;
     const isFinalStep = step === 2;
-    forwardButtonImage.src = isFinalStep ? 'assets/tutorial-start.png' : 'assets/tutorial-next.png';
     forwardButtonLabel.textContent = isFinalStep ? 'はじめる' : '次へ';
     nextBtn.classList.toggle('is-start', isFinalStep);
   }
