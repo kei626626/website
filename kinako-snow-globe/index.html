@@ -39,12 +39,23 @@
       <div class="tutorial-blur" aria-hidden="true"></div>
       <div class="tutorial-card">
         <button class="skip-btn" id="skipBtn" type="button">スキップ</button>
-        <div class="tutorial-visual" id="tutorialVisual" aria-hidden="true"></div>
+        <div class="tutorial-visual" aria-hidden="true">
+          <img id="tutorialImage" src="assets/tutorial-tilt.png" alt="" draggable="false">
+        </div>
         <p class="step-count" id="stepCount">01 / 03</p>
         <h2 id="tutorialTitle">傾けてみよう</h2>
         <p id="tutorialText">スマホを左右に傾けると、雪と金色の光が重力に合わせて動きます。</p>
         <div class="dots" aria-hidden="true"><i class="active"></i><i></i><i></i></div>
-        <button class="next-btn" id="nextBtn" type="button">次へ <span>→</span></button>
+        <div class="tutorial-actions">
+          <button class="tutorial-image-btn back-image-btn" id="backBtn" type="button" hidden>
+            <img src="assets/tutorial-back.png" alt="" draggable="false">
+            <span class="sr-only">もどる</span>
+          </button>
+          <button class="tutorial-image-btn forward-image-btn" id="nextBtn" type="button">
+            <img id="forwardButtonImage" src="assets/tutorial-next.png" alt="" draggable="false">
+            <span class="sr-only" id="forwardButtonLabel">次へ</span>
+          </button>
+        </div>
       </div>
     </section>
 

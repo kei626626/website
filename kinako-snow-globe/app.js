@@ -5,6 +5,9 @@
   const tutorial = document.querySelector('#tutorial');
   const permissionSheet = document.querySelector('#permissionSheet');
   const nextBtn = document.querySelector('#nextBtn');
+  const backBtn = document.querySelector('#backBtn');
+  const forwardButtonImage = document.querySelector('#forwardButtonImage');
+  const forwardButtonLabel = document.querySelector('#forwardButtonLabel');
   const skipBtn = document.querySelector('#skipBtn');
   const infoBtn = document.querySelector('#infoBtn');
   const shakeBtn = document.querySelector('#shakeBtn');
@@ -14,23 +17,31 @@
   const text = document.querySelector('#tutorialText');
   const count = document.querySelector('#stepCount');
   const hint = document.querySelector('#hint');
+  const tutorialImage = document.querySelector('#tutorialImage');
   const ctx = canvas.getContext('2d', { alpha: true });
 
   const steps = [
     ['傾けてみよう', 'スマホを左右に傾けると、雪と金色の光が重力に合わせて動きます。'],
     ['振って雪を舞わせよう', '端末を軽く振ると、底に積もった雪がふわっと舞い上がります。'],
-    ['指でも遊べます', '画面をなぞって粒子を動かせます。ボタンを押せば、いつでも雪が舞います。']
+    ['キラキラが動くよ', '傾けたり振ったりすると、白い雪と金色の光がきれいに広がります。']
+  ];
+  const tutorialImages = [
+    'assets/tutorial-tilt.png',
+    'assets/tutorial-shake.png',
+    'assets/tutorial-sparkle.png'
   ];
   let step = 0;
   let width = 0, height = 0, dpr = 1, radius = 0;
   let gx = 0, gy = 0.055;
   let tiltSignal = 0;
+  let lastGravityX = 0, lastGravityY = 0.055;
+  let lastGravityMotionAt = 0;
   let pointer = null;
   let lastMotion = 0;
   const particles = [];
   const highlights = [];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const onboardingVersion = 'image-assets-v2';
+  const onboardingVersion = 'image-assets-v3';
 
   // Reset stale onboarding choices when the experience changes. Without this,
   // an older "touch only" choice can silently suppress both the tutorial and
@@ -231,14 +242,57 @@
 
   function setStep(next) {
     step = next; tutorial.dataset.step = String(step);
+    tutorialImage.src = tutorialImages[step];
     title.textContent = steps[step][0]; text.textContent = steps[step][1];
     count.textContent = `0${step + 1} / 03`;
     tutorial.querySelectorAll('.dots i').forEach((dot, i) => dot.classList.toggle('active', i === step));
-    nextBtn.innerHTML = step === 2 ? 'はじめる <span>✦</span>' : '次へ <span>→</span>';
+    backBtn.hidden = step === 0;
+    const isFinalStep = step === 2;
+    forwardButtonImage.src = isFinalStep ? 'assets/tutorial-start.png' : 'assets/tutorial-next.png';
+    forwardButtonLabel.textContent = isFinalStep ? 'はじめる' : '次へ';
+    nextBtn.classList.toggle('is-start', isFinalStep);
   }
 
   function needsMotionPermission() {
     return typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function';
+  }
+  function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+  }
+  function screenAngle() {
+    const raw = screen.orientation?.angle ?? window.orientation ?? 0;
+    return ((Number(raw) % 360) + 360) % 360;
+  }
+  function deviceGravityToScreen(deviceX, deviceY) {
+    const angle = screenAngle();
+    if (angle === 90) return { x: -deviceY, y: -deviceX };
+    if (angle === 180) return { x: -deviceX, y: deviceY };
+    if (angle === 270) return { x: deviceY, y: deviceX };
+    return { x: deviceX, y: -deviceY };
+  }
+  function applyGravity(targetX, targetY, response = .38) {
+    targetX = clamp(targetX, -.115, .115);
+    targetY = clamp(targetY, -.115, .115);
+    const oldLength = Math.hypot(lastGravityX, lastGravityY);
+    const newLength = Math.hypot(targetX, targetY);
+    const dot = oldLength > .01 && newLength > .01 ?
+      (lastGravityX * targetX + lastGravityY * targetY) / (oldLength * newLength) : 1;
+    const change = Math.hypot(targetX - lastGravityX, targetY - lastGravityY);
+
+    // When gravity turns over, release particles that are resting against the
+    // opposite glass edge so they do not appear glued near the centre.
+    if (dot < .15 || change > .055) {
+      const kick = Math.min(2.15, .55 + change * 12);
+      const length = Math.max(.001, newLength);
+      for (const p of particles) {
+        p.vx += targetX / length * kick + (Math.random() - .5) * .12;
+        p.vy += targetY / length * kick + (Math.random() - .5) * .12;
+      }
+    }
+
+    lastGravityX = targetX; lastGravityY = targetY;
+    gx += (targetX - gx) * response;
+    gy += (targetY - gy) * response;
   }
   async function enableMotion() {
     try {
@@ -259,10 +313,12 @@
   }
   function onOrientation(e) {
     if (e.gamma == null || e.beta == null) return;
-    const angle = screen.orientation?.angle || window.orientation || 0;
-    let x = e.gamma / 34, y = (e.beta - 45) / 42;
-    if (angle === 90) [x, y] = [y, -x];
-    if (angle === -90 || angle === 270) [x, y] = [-y, x];
+    const angle = screenAngle();
+    let x = e.gamma / 34;
+    let betaGravity = Math.sin(e.beta * Math.PI / 180);
+    if (angle === 90) [x, betaGravity] = [betaGravity, -x];
+    if (angle === 180) [x, betaGravity] = [-x, -betaGravity];
+    if (angle === 270) [x, betaGravity] = [-betaGravity, x];
     const rawTilt = Math.max(-1.2, Math.min(1.2, x));
     const deadZone = .035;
     const activeTilt = Math.abs(rawTilt) <= deadZone ? 0 :
@@ -279,12 +335,21 @@
       }
     }
 
-    const targetX = activeTilt * .09;
-    const targetY = Math.max(.025, Math.min(.09, .055 + y * .035));
-    gx += (targetX - gx) * .46;
-    gy += (targetY - gy) * .32;
+    // DeviceMotion supplies a truer gravity vector. Keep this orientation
+    // calculation as a fallback for browsers that do not expose it.
+    if (performance.now() - lastGravityMotionAt > 240) {
+      applyGravity(activeTilt * .1, betaGravity * .1, .4);
+    }
   }
   function onMotion(e) {
+    const gravity = e.accelerationIncludingGravity;
+    if (gravity && Number.isFinite(gravity.x) && Number.isFinite(gravity.y)) {
+      const screenGravity = deviceGravityToScreen(gravity.x, gravity.y);
+      const gravityScale = .105 / 9.81;
+      lastGravityMotionAt = performance.now();
+      applyGravity(screenGravity.x * gravityScale, screenGravity.y * gravityScale, .46);
+    }
+
     const a = e.acceleration || e.accelerationIncludingGravity;
     if (!a) return;
     const magnitude = Math.hypot(a.x || 0, a.y || 0, a.z || 0);
@@ -306,6 +371,7 @@
   }
 
   nextBtn.addEventListener('click', () => step < 2 ? setStep(step + 1) : finishTutorial());
+  backBtn.addEventListener('click', () => setStep(Math.max(0, step - 1)));
   skipBtn.addEventListener('click', finishTutorial);
   infoBtn.addEventListener('click', () => { setStep(0); tutorial.classList.add('is-open'); });
   shakeBtn.addEventListener('click', () => burst(1.05));
