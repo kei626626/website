@@ -28,6 +28,16 @@
   let lastMotion = 0;
   const particles = [];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const onboardingVersion = 'image-assets-v2';
+
+  // Reset stale onboarding choices when the experience changes. Without this,
+  // an older "touch only" choice can silently suppress both the tutorial and
+  // the iOS motion-permission button after an update.
+  if (localStorage.getItem('kinako-onboarding-version') !== onboardingVersion) {
+    localStorage.removeItem('kinako-tutorial');
+    localStorage.removeItem('kinako-motion');
+    localStorage.setItem('kinako-onboarding-version', onboardingVersion);
+  }
 
   function resize() {
     const box = globe.getBoundingClientRect();
@@ -191,7 +201,10 @@
   }
   function finishTutorial() {
     tutorial.classList.remove('is-open'); localStorage.setItem('kinako-tutorial', 'done');
-    if (needsMotionPermission() && localStorage.getItem('kinako-motion') !== 'touch') permissionSheet.hidden = false;
+    // iOS requires requestPermission() to run directly from a button tap.
+    // Always offer that button after the tutorial, including when the visitor
+    // previously selected touch-only mode and later reopens the guide.
+    if (needsMotionPermission()) permissionSheet.hidden = false;
     else enableMotion();
   }
 
@@ -206,11 +219,18 @@
   globe.addEventListener('pointerup', () => pointer = null);
   globe.addEventListener('pointercancel', () => pointer = null);
   window.addEventListener('resize', () => { resize(); seed(); });
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && localStorage.getItem('kinako-motion') === 'enabled') enableMotion(); });
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && localStorage.getItem('kinako-motion') === 'enabled' && !needsMotionPermission()) enableMotion();
+  });
 
   resize(); seed(); setStep(0); update();
   if (localStorage.getItem('kinako-tutorial') === 'done') {
     tutorial.classList.remove('is-open');
-    if (localStorage.getItem('kinako-motion') === 'enabled' && !needsMotionPermission()) enableMotion();
+    if (needsMotionPermission() && localStorage.getItem('kinako-motion') === 'enabled') {
+      allowMotionBtn.textContent = 'センサーを再開';
+      permissionSheet.hidden = false;
+    } else if (localStorage.getItem('kinako-motion') === 'enabled') {
+      enableMotion();
+    }
   }
 })();
