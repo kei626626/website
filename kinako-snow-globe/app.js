@@ -23,10 +23,12 @@
   ];
   let step = 0;
   let width = 0, height = 0, dpr = 1, radius = 0;
-  let gx = 0, gy = 0.105;
+  let gx = 0, gy = 0.055;
+  let tiltSignal = 0;
   let pointer = null;
   let lastMotion = 0;
   const particles = [];
+  const highlights = [];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const onboardingVersion = 'image-assets-v2';
 
@@ -39,6 +41,37 @@
     localStorage.setItem('kinako-onboarding-version', onboardingVersion);
   }
 
+  function makeGlowSprite() {
+    const sprite = document.createElement('canvas');
+    sprite.width = 64; sprite.height = 64;
+    const sctx = sprite.getContext('2d');
+    const glow = sctx.createRadialGradient(32, 32, 0, 32, 32, 31);
+    glow.addColorStop(0, 'rgba(255,255,225,1)');
+    glow.addColorStop(.18, 'rgba(255,222,105,.95)');
+    glow.addColorStop(.48, 'rgba(244,178,39,.48)');
+    glow.addColorStop(1, 'rgba(235,166,28,0)');
+    sctx.fillStyle = glow; sctx.fillRect(0, 0, 64, 64);
+    return sprite;
+  }
+
+  function makeStarSprite() {
+    const sprite = document.createElement('canvas');
+    sprite.width = 64; sprite.height = 64;
+    const sctx = sprite.getContext('2d');
+    sctx.translate(32, 32); sctx.beginPath();
+    sctx.moveTo(0, -27); sctx.lineTo(4, -4);
+    sctx.lineTo(27, 0); sctx.lineTo(4, 4);
+    sctx.lineTo(0, 27); sctx.lineTo(-4, 4);
+    sctx.lineTo(-27, 0); sctx.lineTo(-4, -4); sctx.closePath();
+    sctx.fillStyle = '#ffc62f'; sctx.shadowBlur = 9; sctx.shadowColor = '#ffd858'; sctx.fill();
+    sctx.beginPath(); sctx.arc(0, 0, 2.5, 0, Math.PI * 2);
+    sctx.fillStyle = '#fffbd8'; sctx.fill();
+    return sprite;
+  }
+
+  const glowSprite = makeGlowSprite();
+  const starSprite = makeStarSprite();
+
   function resize() {
     const box = globe.getBoundingClientRect();
     width = box.width; height = box.height; radius = width * .475;
@@ -49,41 +82,28 @@
 
   function seed() {
     particles.length = 0;
+    highlights.length = 0;
     const total = reducedMotion ? 140 : 320;
     for (let i = 0; i < total; i++) {
-      const type = i % 13 === 0 ? 'star' : i % 7 === 0 ? 'glow' : 'snow';
-      const restX = width * (.18 + Math.random() * .64);
+      const type = i % 17 === 0 ? 'star' : i % 9 === 0 ? 'glow' : 'snow';
+      const restX = width * (.12 + Math.random() * .76);
       const size = type === 'star' ? 2.2 + Math.random() * 1.8 :
         type === 'glow' ? 1.2 + Math.random() * 1.5 : .7 + Math.random() * 1.45;
       const inset = type === 'star' ? Math.random() * 10 :
         type === 'glow' ? Math.random() * 13 : Math.pow(Math.random(), .72) * 20;
       const p = {
         x: restX, y: 0, vx: 0, vy: 0, r: size,
-        bound: type === 'star' ? size * 2.35 : type === 'glow' ? size * 4.2 : size,
+        bound: type === 'star' ? size * 2.35 : type === 'glow' ? size * 3.2 : size,
         restX, inset, type,
-        a: .5 + Math.random() * .5, twinkle: Math.random() * Math.PI * 2
+        a: type === 'glow' ? .35 + Math.random() * .4 : .5 + Math.random() * .5,
+        twinkle: Math.random() * Math.PI * 2
       };
       const dx = p.x - width / 2;
       const limit = radius - p.bound - 2 - p.inset;
       p.y = height / 2 + Math.sqrt(Math.max(0, limit * limit - dx * dx)) - Math.random() * 4;
       particles.push(p);
+      if (type !== 'snow') highlights.push(p);
     }
-  }
-
-  function drawStar(x, y, r, alpha) {
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.beginPath();
-    ctx.moveTo(0, -r * 2.35); ctx.lineTo(r * .34, -r * .34);
-    ctx.lineTo(r * 2.35, 0); ctx.lineTo(r * .34, r * .34);
-    ctx.lineTo(0, r * 2.35); ctx.lineTo(-r * .34, r * .34);
-    ctx.lineTo(-r * 2.35, 0); ctx.lineTo(-r * .34, -r * .34);
-    ctx.closePath();
-    ctx.fillStyle = `rgba(255,195,36,${alpha})`;
-    ctx.shadowBlur = 9; ctx.shadowColor = '#ffd34e'; ctx.fill();
-    ctx.beginPath(); ctx.arc(0, 0, Math.max(.55, r * .22), 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(255,255,220,${Math.min(1, alpha + .2)})`; ctx.fill();
-    ctx.restore();
   }
 
   function burst(strength = 1) {
@@ -95,20 +115,49 @@
     hint.style.opacity = '0';
   }
 
+  function containParticle(p, cx, cy) {
+    const dx = p.x - cx, dy = p.y - cy;
+    const dist = Math.hypot(dx, dy), limit = radius - p.bound - 2 - p.inset;
+    if (dist > limit) {
+      const nx = dx / dist, ny = dy / dist;
+      p.x = cx + nx * limit; p.y = cy + ny * limit;
+      const dot = p.vx * nx + p.vy * ny;
+      if (dot > 0) { p.vx -= 1.36 * dot * nx; p.vy -= 1.36 * dot * ny; }
+      p.vx *= .93; p.vy *= .93;
+    }
+  }
+
+  function separateHighlights() {
+    for (let i = 0; i < highlights.length; i++) {
+      const a = highlights[i];
+      for (let j = i + 1; j < highlights.length; j++) {
+        const b = highlights[j];
+        const dx = b.x - a.x, dy = b.y - a.y;
+        const min = Math.max(6, (a.bound + b.bound) * .55);
+        const dist2 = dx * dx + dy * dy;
+        if (dist2 >= min * min) continue;
+        const dist = Math.max(.01, Math.sqrt(dist2));
+        const nx = dx / dist, ny = dy / dist;
+        const push = (min - dist) * .22;
+        a.x -= nx * push; a.y -= ny * push;
+        b.x += nx * push; b.y += ny * push;
+        a.vx -= nx * .025; b.vx += nx * .025;
+      }
+    }
+  }
+
   function update() {
     const cx = width / 2, cy = height / 2;
     ctx.clearRect(0, 0, width, height);
+
     for (const p of particles) {
       p.vx += gx; p.vy += gy;
-      // A quiet phone should create a soft snow bed, not pull every flake into
-      // one point at the very bottom of the circular boundary.
-      const nearBottom = p.y > cy + radius * .56;
-      if (nearBottom && Math.abs(gx) < .012 && Math.abs(p.vx) < .45) {
-        p.vx += (p.restX - p.x) * .0018;
-      } else if (Math.abs(gx) >= .012) {
-        // Prevent settled flakes from feeling glued down when the phone tilts.
-        p.vx += (Math.random() - .5) * .016;
-        p.vy -= Math.random() * .003;
+      const nearBottom = p.y > cy + radius * .55;
+      if (nearBottom && Math.abs(tiltSignal) < .018 && Math.abs(p.vx) < .5) {
+        p.vx += (p.restX - p.x) * .0015;
+      } else if (Math.abs(tiltSignal) >= .018) {
+        p.vx += (Math.random() - .5) * .024;
+        p.vy -= Math.random() * .007;
       }
       if (pointer) {
         const dx = p.x - pointer.x, dy = p.y - pointer.y;
@@ -119,33 +168,32 @@
           p.vy += (dy / Math.sqrt(dist2)) * force;
         }
       }
-      p.vx *= .994; p.vy *= .995; p.x += p.vx; p.y += p.vy;
-      const dx = p.x - cx, dy = p.y - cy;
-      const dist = Math.hypot(dx, dy), limit = radius - p.bound - 2 - p.inset;
-      if (dist > limit) {
-        const nx = dx / dist, ny = dy / dist;
-        p.x = cx + nx * limit; p.y = cy + ny * limit;
-        const dot = p.vx * nx + p.vy * ny;
-        if (dot > 0) { p.vx -= 1.3 * dot * nx; p.vy -= 1.3 * dot * ny; }
-        p.vx *= .91; p.vy *= .91;
-      }
+      p.vx = Math.max(-5.2, Math.min(5.2, p.vx * .99));
+      p.vy = Math.max(-5.2, Math.min(5.2, p.vy * .992));
+      p.x += p.vx; p.y += p.vy;
+      containParticle(p, cx, cy);
+    }
+
+    separateHighlights();
+    for (const p of highlights) containParticle(p, cx, cy);
+
+    for (const p of particles) {
       p.twinkle += .035;
       if (p.type === 'star') {
-        drawStar(p.x, p.y, p.r, p.a * (.78 + Math.sin(p.twinkle) * .18));
+        const size = p.bound * 2;
+        ctx.globalAlpha = p.a * (.78 + Math.sin(p.twinkle) * .18);
+        ctx.drawImage(starSprite, p.x - size / 2, p.y - size / 2, size, size);
       } else if (p.type === 'glow') {
-        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4.2);
-        glow.addColorStop(0, `rgba(255,244,174,${p.a})`);
-        glow.addColorStop(.28, `rgba(247,190,50,${p.a * .75})`);
-        glow.addColorStop(1, 'rgba(235,166,28,0)');
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4.2, 0, Math.PI * 2);
-        ctx.fillStyle = glow; ctx.fill();
+        const size = p.bound * 2;
+        ctx.globalAlpha = p.a * (.82 + Math.sin(p.twinkle) * .12);
+        ctx.drawImage(glowSprite, p.x - size / 2, p.y - size / 2, size, size);
       } else {
+        ctx.globalAlpha = 1;
         ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,252,${p.a})`;
-        ctx.shadowBlur = p.r > 1.5 ? 2 : 0; ctx.shadowColor = '#fff';
-        ctx.fill(); ctx.shadowBlur = 0;
+        ctx.fillStyle = `rgba(255,255,252,${p.a})`; ctx.fill();
       }
     }
+    ctx.globalAlpha = 1;
     requestAnimationFrame(update);
   }
 
@@ -183,10 +231,26 @@
     let x = e.gamma / 34, y = (e.beta - 45) / 42;
     if (angle === 90) [x, y] = [y, -x];
     if (angle === -90 || angle === 270) [x, y] = [-y, x];
-    const targetX = Math.max(-1.25, Math.min(1.25, x)) * .055;
-    const targetY = Math.max(.035, Math.min(.16, .105 + y * .065));
-    gx += (targetX - gx) * .3;
-    gy += (targetY - gy) * .24;
+    const rawTilt = Math.max(-1.2, Math.min(1.2, x));
+    const deadZone = .035;
+    const activeTilt = Math.abs(rawTilt) <= deadZone ? 0 :
+      Math.sign(rawTilt) * (Math.abs(rawTilt) - deadZone) / (1 - deadZone);
+    const tiltChange = activeTilt - tiltSignal;
+    tiltSignal = activeTilt;
+
+    // A direction change should immediately release a settled pile instead of
+    // waiting for gravity to overcome the resting spring.
+    if (Math.abs(tiltChange) > .018) {
+      for (const p of particles) {
+        p.vx += tiltChange * 4.2;
+        p.vy -= Math.abs(tiltChange) * (.32 + Math.random() * .35);
+      }
+    }
+
+    const targetX = activeTilt * .09;
+    const targetY = Math.max(.025, Math.min(.09, .055 + y * .035));
+    gx += (targetX - gx) * .46;
+    gy += (targetY - gy) * .32;
   }
   function onMotion(e) {
     const a = e.acceleration || e.accelerationIncludingGravity;
