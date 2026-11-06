@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#071b2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23071b2e'/%3E%3Ccircle cx='32' cy='29' r='18' fill='none' stroke='%23e8c16b' stroke-width='3'/%3E%3Cpath d='M18 49h28' stroke='%23e8c16b' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='27' cy='26' r='2' fill='white'/%3E%3Ccircle cx='38' cy='20' r='2' fill='white'/%3E%3C/svg%3E">
+  <title>きなこのクリスマス・スノードーム</title>
+  <meta name="description" content="傾けて、振って、雪が舞う。きなこのクリスマス・スノードーム。">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app" id="app">
+    <div class="aurora" aria-hidden="true"></div>
+
+    <header class="brand" aria-label="きなこのクリスマス">
+      <span class="brand-star" aria-hidden="true">✦</span>
+      <div>
+        <p class="brand-kicker">A LITTLE CHRISTMAS GIFT</p>
+        <h1>Kinako's<br><em>Snow Globe</em></h1>
+      </div>
+    </header>
+
+    <section class="globe-wrap" id="globeWrap" aria-label="インタラクティブなスノードーム">
+      <div class="globe-shadow" aria-hidden="true"></div>
+      <div class="globe" id="globe">
+        <canvas id="snowCanvas" aria-hidden="true"></canvas>
+        <div class="globe-scene" aria-hidden="true">
+          <div class="moon"></div>
+          <div class="stars"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="pine pine-left"></div>
+          <div class="pine pine-right"></div>
+          <div class="snow-bank"></div>
+          <div class="kinako">
+            <div class="ear ear-l"></div><div class="ear ear-r"></div>
+            <div class="head"><span class="eye eye-l"></span><span class="eye eye-r"></span><span class="muzzle"></span></div>
+            <div class="scarf"></div><div class="body"></div><div class="tail"></div>
+          </div>
+          <p class="scene-message">Merry Christmas</p>
+        </div>
+        <div class="glass-shine" aria-hidden="true"></div>
+      </div>
+      <div class="base" aria-hidden="true">
+        <div class="base-rim"></div>
+        <div class="base-plaque">KINAKO · 2026</div>
+      </div>
+    </section>
+
+    <div class="hint" id="hint" role="status">
+      <span class="hint-icon">↔</span>
+      <span>スマホを傾けて、振ってみてね</span>
+    </div>
+
+    <nav class="controls" aria-label="スノードーム操作">
+      <button class="control-btn" id="shakeBtn" type="button"><span>✦</span> 雪を舞わせる</button>
+      <button class="icon-btn" id="infoBtn" type="button" aria-label="使い方を見る">?</button>
+    </nav>
+
+    <section class="tutorial is-open" id="tutorial" aria-label="使い方">
+      <div class="tutorial-blur" aria-hidden="true"></div>
+      <div class="tutorial-card">
+        <button class="skip-btn" id="skipBtn" type="button">スキップ</button>
+        <div class="tutorial-visual" id="tutorialVisual" aria-hidden="true">
+          <div class="phone"><div class="phone-globe">✦</div></div>
+          <div class="motion-lines"><i></i><i></i></div>
+        </div>
+        <p class="step-count" id="stepCount">01 / 03</p>
+        <h2 id="tutorialTitle">傾けてみよう</h2>
+        <p id="tutorialText">スマホを左右に傾けると、雪と金色の光が重力に合わせて動きます。</p>
+        <div class="dots" aria-hidden="true"><i class="active"></i><i></i><i></i></div>
+        <button class="next-btn" id="nextBtn" type="button">次へ <span>→</span></button>
+      </div>
+    </section>
+
+    <div class="permission-sheet" id="permissionSheet" role="dialog" aria-modal="true" aria-labelledby="permissionTitle" hidden>
+      <div class="permission-card">
+        <span class="permission-icon">◒</span>
+        <h2 id="permissionTitle">動きをもっと楽しむ</h2>
+        <p>傾きや振動に反応させるため、iPhoneの「動作と方向」へのアクセスを許可してください。データは保存・送信されません。</p>
+        <button class="next-btn" id="allowMotionBtn" type="button">センサーを許可</button>
+        <button class="text-btn" id="touchOnlyBtn" type="button">タッチ操作だけで遊ぶ</button>
+      </div>
+    </div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
