@@ -13,38 +13,15 @@
 </head>
 <body>
   <main class="app" id="app">
-    <div class="aurora" aria-hidden="true"></div>
-
     <header class="brand" aria-label="きなこのクリスマス">
-      <span class="brand-star" aria-hidden="true">✦</span>
-      <div>
-        <p class="brand-kicker">A LITTLE CHRISTMAS GIFT</p>
-        <h1>Kinako's<br><em>Snow Globe</em></h1>
-      </div>
+      <h1 class="sr-only">Merry Christmas from KINAKO</h1>
+      <img src="assets/christmas-logo.png" alt="Merry Christmas from KINAKO" draggable="false">
     </header>
 
     <section class="globe-wrap" id="globeWrap" aria-label="インタラクティブなスノードーム">
-      <div class="globe-shadow" aria-hidden="true"></div>
+      <img class="globe-art" src="assets/kinako-snow-globe.png" alt="サンタ姿のきなこが入ったクリスマススノードーム" draggable="false">
       <div class="globe" id="globe">
         <canvas id="snowCanvas" aria-hidden="true"></canvas>
-        <div class="globe-scene" aria-hidden="true">
-          <div class="moon"></div>
-          <div class="stars"><i></i><i></i><i></i><i></i><i></i></div>
-          <div class="pine pine-left"></div>
-          <div class="pine pine-right"></div>
-          <div class="snow-bank"></div>
-          <div class="kinako">
-            <div class="ear ear-l"></div><div class="ear ear-r"></div>
-            <div class="head"><span class="eye eye-l"></span><span class="eye eye-r"></span><span class="muzzle"></span></div>
-            <div class="scarf"></div><div class="body"></div><div class="tail"></div>
-          </div>
-          <p class="scene-message">Merry Christmas</p>
-        </div>
-        <div class="glass-shine" aria-hidden="true"></div>
-      </div>
-      <div class="base" aria-hidden="true">
-        <div class="base-rim"></div>
-        <div class="base-plaque">KINAKO · 2026</div>
       </div>
     </section>
 
@@ -62,10 +39,7 @@
       <div class="tutorial-blur" aria-hidden="true"></div>
       <div class="tutorial-card">
         <button class="skip-btn" id="skipBtn" type="button">スキップ</button>
-        <div class="tutorial-visual" id="tutorialVisual" aria-hidden="true">
-          <div class="phone"><div class="phone-globe">✦</div></div>
-          <div class="motion-lines"><i></i><i></i></div>
-        </div>
+        <div class="tutorial-visual" id="tutorialVisual" aria-hidden="true"></div>
         <p class="step-count" id="stepCount">01 / 03</p>
         <h2 id="tutorialTitle">傾けてみよう</h2>
         <p id="tutorialText">スマホを左右に傾けると、雪と金色の光が重力に合わせて動きます。</p>
