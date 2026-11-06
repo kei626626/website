@@ -83,14 +83,14 @@
   function seed() {
     particles.length = 0;
     highlights.length = 0;
-    const total = reducedMotion ? 140 : 320;
+    const total = reducedMotion ? 220 : 520;
     for (let i = 0; i < total; i++) {
-      const type = i % 17 === 0 ? 'star' : i % 9 === 0 ? 'glow' : 'snow';
-      const restX = width * (.12 + Math.random() * .76);
-      const size = type === 'star' ? 2.2 + Math.random() * 1.8 :
-        type === 'glow' ? 1.2 + Math.random() * 1.5 : .7 + Math.random() * 1.45;
-      const inset = type === 'star' ? Math.random() * 10 :
-        type === 'glow' ? Math.random() * 13 : Math.pow(Math.random(), .72) * 20;
+      const type = i % 24 === 0 ? 'star' : i % 15 === 0 ? 'glow' : 'snow';
+      const restX = width * (.06 + Math.random() * .88);
+      const size = type === 'star' ? 2.3 + Math.random() * 1.9 :
+        type === 'glow' ? 1.15 + Math.random() * 1.35 : .8 + Math.random() * 1.65;
+      const inset = type === 'star' ? Math.random() * 4 :
+        type === 'glow' ? Math.random() * 5 : Math.pow(Math.random(), .82) * 9;
       const p = {
         x: restX, y: 0, vx: 0, vy: 0, r: size,
         bound: type === 'star' ? size * 2.35 : type === 'glow' ? size * 3.2 : size,
@@ -109,8 +109,8 @@
   function burst(strength = 1) {
     navigator.vibrate?.(20);
     for (const p of particles) {
-      p.vx += (Math.random() - .5) * 3.8 * strength;
-      p.vy -= (1.4 + Math.random() * 4.2) * strength;
+      p.vx += (Math.random() - .5) * 4.8 * strength;
+      p.vy -= (1.8 + Math.random() * 4.8) * strength;
     }
     hint.style.opacity = '0';
   }
@@ -151,13 +151,17 @@
     ctx.clearRect(0, 0, width, height);
 
     for (const p of particles) {
-      p.vx += gx; p.vy += gy;
+      p.vx += gx;
+      p.vy += gy * (p.type === 'snow' ? .45 : .85);
       const nearBottom = p.y > cy + radius * .55;
       if (nearBottom && Math.abs(tiltSignal) < .018 && Math.abs(p.vx) < .5) {
         p.vx += (p.restX - p.x) * .0015;
       } else if (Math.abs(tiltSignal) >= .018) {
         p.vx += (Math.random() - .5) * .024;
         p.vy -= Math.random() * .007;
+      }
+      if (p.type === 'snow' && p.y < cy + radius * .45) {
+        p.vx += Math.sin(p.twinkle * .73) * .004;
       }
       if (pointer) {
         const dx = p.x - pointer.x, dy = p.y - pointer.y;
@@ -169,7 +173,8 @@
         }
       }
       p.vx = Math.max(-5.2, Math.min(5.2, p.vx * .99));
-      p.vy = Math.max(-5.2, Math.min(5.2, p.vy * .992));
+      const verticalDrag = p.type === 'snow' ? .986 : .99;
+      p.vy = Math.max(-5.2, Math.min(5.2, p.vy * verticalDrag));
       p.x += p.vx; p.y += p.vy;
       containParticle(p, cx, cy);
     }
