@@ -40,7 +40,7 @@
   const particles = [];
   const highlights = [];
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const onboardingVersion = 'image-assets-v3';
+  const onboardingVersion = 'bgm-stars-v4';
 
   // Reset stale onboarding choices when the experience changes. Without this,
   // an older "touch only" choice can silently suppress both the tutorial and
